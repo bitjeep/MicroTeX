@@ -17,7 +17,7 @@ macro(kern) {
 macro(hvspace) {
   auto[unit, value] = SpaceAtom::getLength(args[1]);
   return (
-    args[0][0] == L'h'
+    args[0][0] == u'h'
     ? sptrOf<SpaceAtom>(unit, value, 0.f, 0.f)
     : sptrOf<SpaceAtom>(unit, 0.f, value, 0.f)
   );
@@ -384,7 +384,7 @@ macro(sizes) {
 
 macro(romannumeral) {
   int numbers[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-  string letters[] = {"M", "CM", "D", "CD", "C", "XC", "u", "Xu", "X", "IX", "V", "IV", "I"};
+  string letters[] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
   string roman;
 
   int num;
@@ -437,7 +437,7 @@ macro(xml) {
   u16string buf;
   size_t start = 0;
   size_t pos;
-  while ((pos = str.find(L'$')) != u16string::npos) {
+  while ((pos = str.find(u'$')) != u16string::npos) {
     if (pos < str.length() - 1) {
       start = pos;
       while (++start < str.length() && isalpha(str[start]));

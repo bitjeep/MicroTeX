@@ -192,7 +192,7 @@ u16string TeXParser::getGroup(const u16string& open, const u16string& close) {
   int oc = 0;
   int cc = 0;
   int startC = 0;
-  char16_t prev = L'\0';
+  char16_t prev = u'\0';
   u16string buf;
 
   while (_pos < _len && group != 0) {
@@ -200,7 +200,7 @@ u16string TeXParser::getGroup(const u16string& open, const u16string& close) {
     char16_t c1;
 
     if (prev != ESCAPE && c == ' ') {
-      while (_pos < _len && _latex[_pos++] == ' ') buf.append(1, L' ');
+      while (_pos < _len && _latex[_pos++] == ' ') buf.append(1, u' ');
       c = _latex[--_pos];
       if (isValidCharInCmd(prev) && isValidCharInCmd(c)) {
         oc = cc = 0;
@@ -256,7 +256,7 @@ u16string TeXParser::getOverArgument() {
   if (_pos == _len) return u"";
 
   int ogroup = 1, spos;
-  char16_t ch = L'\0';
+  char16_t ch = u'\0';
 
   spos = _pos;
   while (_pos < _len && ogroup != 0) {
@@ -311,7 +311,7 @@ u16string TeXParser::getOverArgument() {
 
 u16string TeXParser::getCommand() {
   int spos = ++_pos;
-  char16_t ch = L'\0';
+  char16_t ch = u'\0';
 
   while (_pos < _len) {
     ch = _latex[_pos];
@@ -324,7 +324,7 @@ u16string TeXParser::getCommand() {
     _pos++;
   }
 
-  if (ch == L'\0') return u"";
+  if (ch == u'\0') return u"";
 
   if (_pos == spos) _pos++;
 
@@ -460,7 +460,7 @@ bool TeXParser::isValidName(const u16string& com) const {
   if (com.empty()) return false;
   if (com[0] != '\\') return false;
 
-  char16_t c = L'\0';
+  char16_t c = u'\0';
   int p = 1;
   int l = com.length();
   while (p < l) {
@@ -629,7 +629,7 @@ sptr<Atom> TeXParser::getArgument() {
 pair<UnitType, float> TeXParser::getLength() {
   if (_pos == _len) return make_pair(UnitType::none, -1.f);
 
-  char16_t ch = L'\0';
+  char16_t ch = u'\0';
 
   skipWhiteSpace();
   const int start = _pos;

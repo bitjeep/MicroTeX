@@ -445,7 +445,7 @@ SpaceAtom ScriptsAtom::SCRIPT_SPACE(UnitType::point, 0.5f, 0.f, 0.f);
 
 sptr<Box> ScriptsAtom::createBox(Environment& env) {
   if (_base == nullptr) {
-    auto in = sptrOf<CharAtom>(L'M', "mathnormal");
+    auto in = sptrOf<CharAtom>(u'M', "mathnormal");
     _base = sptrOf<PhantomAtom>(in, false, true, true);
   }
 
@@ -610,7 +610,7 @@ sptr<Box> BigOperatorAtom::createSideSets(Environment& env) {
   auto* sa = static_cast<SideSetsAtom*>(_base.get());
   auto sl = sa->_left, sr = sa->_right, sb = sa->_base;
   if (sb == nullptr) {
-    auto in = sptrOf<CharAtom>(L'M', "mathnormal");
+    auto in = sptrOf<CharAtom>(u'M', "mathnormal");
     sb = sptrOf<PhantomAtom>(in, false, true, true);
   }
 
@@ -806,7 +806,7 @@ sptr<Box> BigOperatorAtom::createBox(Environment& env) {
 sptr<Box> SideSetsAtom::createBox(Environment& env) {
   if (_base == nullptr) {
     // create a phantom to place side-sets
-    auto in = sptrOf<CharAtom>(L'M', "mathnormal");
+    auto in = sptrOf<CharAtom>(u'M', "mathnormal");
     _base = sptrOf<PhantomAtom>(in, false, true, true);
   }
 

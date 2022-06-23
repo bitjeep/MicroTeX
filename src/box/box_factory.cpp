@@ -18,7 +18,7 @@ sptr<Box> DelimiterFactory::create(SymbolAtom& symbol, Environment& env, int siz
   for (int i = 1; i <= size && tf.hasNextLarger(c); i++) c = tf.getNextLarger(c, style);
 
   if (i <= size && !tf.hasNextLarger(c)) {
-    CharBox A(tf.getChar(L'A', "mathnormal", style));
+    CharBox A(tf.getChar(u'A', "mathnormal", style));
     auto b = create(symbol.getName(), env, size * (A._height + A._depth));
     return b;
   }

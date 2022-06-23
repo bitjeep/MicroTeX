@@ -305,7 +305,7 @@ map<u16string, MacroInfo*> MacroInfo::_commands{
     mac(0, macro_lmoustache, "lmoustache"),
     mac(0, macro_rmoustache, "rmoustache"),
     mac(0, macro_insertBreakMark, "-"),
-    mac(1, macro_xml, "XMu"),
+    mac(1, macro_xml, "XML"),
     mac(0, macro_above, "above"),
     mac(1, macro_st, "st"),
     mac(1, macro_fcscore, "fcscore"),

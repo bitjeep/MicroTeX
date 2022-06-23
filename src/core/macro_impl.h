@@ -350,7 +350,7 @@ inline macro(sideset) {
   auto r = Formula(tp, args[2])._root;
   auto op = Formula(tp, args[3])._root;
   if (op == nullptr) {
-    auto in = sptrOf<CharAtom>(L'M', "mathnormal");
+    auto in = sptrOf<CharAtom>(u'M', "mathnormal");
     op = sptrOf<PhantomAtom>(in, false, true, true);
   }
   auto cl = dynamic_cast<CumulativeScriptsAtom*>(l.get());

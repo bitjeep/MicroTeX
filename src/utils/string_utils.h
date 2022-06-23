@@ -158,7 +158,7 @@ inline std::string& quotereplace(const std::string& src, std::string& out) {
 inline std::u16string& quotereplace(const std::u16string& src, std::u16string& out) {
   for (size_t i = 0; i < src.length(); i++) {
     char16_t c = src[i];
-    if (c == L'\\' || c == L'$') out.append(1, L'\\');
+    if (c == u'\\' || c == u'$') out.append(1, u'\\');
     out.append(1, c);
   }
   return out;
