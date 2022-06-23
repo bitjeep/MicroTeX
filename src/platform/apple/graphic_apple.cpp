@@ -162,10 +162,10 @@ sptr<Font> Font::_create(const string& name, int style, float size) {
 TextLayout_CoreText::TextLayout_CoreText(const u16string& src, const sptr<Font_CoreText>& f) {
     CTFontRef font = f->getCTFont();
     CFStringRef text = CFStringCreateWithCharacters(kCFAllocatorDefault, (const UniChar*)src.c_str(), src.length());
-    CFStringRef keys[] = { kCTFontAttributeName };
-    CFTypeRef values[] = { font };
+    CFStringRef keys[] = { kCTFontAttributeName, kCTForegroundColorFromContextAttributeName };
+    CFTypeRef values[] = { font, kCFBooleanTrue };
     CFDictionaryRef font_attributes = CFDictionaryCreate(kCFAllocatorDefault, (const void **)&keys,
-                                                         (const void **)&values, 1,
+                                                         (const void **)&values, 2,
                                                          &kCFTypeDictionaryKeyCallBacks,
                                                          &kCFTypeDictionaryValueCallBacks);
     CFAttributedStringRef attr_string = CFAttributedStringCreate(kCFAllocatorDefault, text, font_attributes);
