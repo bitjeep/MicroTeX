@@ -9,12 +9,12 @@ using namespace tex;
 
 bool NewCommandMacro::_errIfConflict = true;
 
-bool NewCommandMacro::isMacro(const wstring& name) {
+bool NewCommandMacro::isMacro(const u16string& name) {
   auto it = _codes.find(name);
   return (it != _codes.end());
 }
 
-void NewCommandMacro::checkNew(const wstring& name) {
+void NewCommandMacro::checkNew(const u16string& name) {
   if (_errIfConflict && isMacro(name))
     throw ex_parse(
       "Command " + wide2utf8(name)
@@ -22,7 +22,7 @@ void NewCommandMacro::checkNew(const wstring& name) {
     );
 }
 
-void NewCommandMacro::checkRenew(const wstring& name) {
+void NewCommandMacro::checkRenew(const u16string& name) {
   if (NewCommandMacro::_errIfConflict && !isMacro(name))
     throw ex_parse(
       "Command " + wide2utf8(name)
@@ -30,17 +30,17 @@ void NewCommandMacro::checkRenew(const wstring& name) {
     );
 }
 
-void NewCommandMacro::addNewCommand(const wstring& name, const wstring& code, int argc) {
+void NewCommandMacro::addNewCommand(const u16string& name, const u16string& code, int argc) {
   checkNew(name);
   _codes[name] = code;
   MacroInfo::add(name, new InflationMacroInfo(_instance, argc));
 }
 
 void NewCommandMacro::addNewCommand(
-  const wstring& name,
-  const wstring& code,
+  const u16string& name,
+  const u16string& code,
   int argc,
-  const wstring& def
+  const u16string& def
 ) {
   checkNew(name);
   _codes[name] = code;
@@ -48,17 +48,17 @@ void NewCommandMacro::addNewCommand(
   MacroInfo::add(name, new InflationMacroInfo(_instance, argc, 1));
 }
 
-void NewCommandMacro::addRenewCommand(const wstring& name, const wstring& code, int argc) {
+void NewCommandMacro::addRenewCommand(const u16string& name, const u16string& code, int argc) {
   checkRenew(name);
   _codes[name] = code;
   MacroInfo::add(name, new InflationMacroInfo(_instance, argc));
 }
 
 void NewCommandMacro::addRenewCommand(
-  const wstring& name,
-  const wstring& code,
+  const u16string& name,
+  const u16string& code,
   int argc,
-  const wstring& def
+  const u16string& def
 ) {
   checkRenew(name);
   _codes[name] = code;
@@ -66,9 +66,9 @@ void NewCommandMacro::addRenewCommand(
   MacroInfo::add(name, new InflationMacroInfo(_instance, argc, 1));
 }
 
-void NewCommandMacro::execute(TeXParser& tp, vector<wstring>& args) {
-  wstring code = _codes[args[0]];
-  wstring rep;
+void NewCommandMacro::execute(TeXParser& tp, vector<u16string>& args) {
+  u16string code = _codes[args[0]];
+  u16string rep;
   size_t argc = args.size() - 12;
   int dec = 0;
 
@@ -82,45 +82,45 @@ void NewCommandMacro::execute(TeXParser& tp, vector<wstring>& args) {
   if (!args[argc + 1].empty()) {
     dec = 1;
     // quotereplace(args[argc + 1], rep);
-    replaceall(code, L"#1", args[argc + 1]);
+    replaceall(code, u"#1", args[argc + 1]);
   } else if (it != _replacements.end()) {
     dec = 1;
     // quotereplace(it->second, rep);
-    replaceall(code, L"#1", it->second);
+    replaceall(code, u"#1", it->second);
   }
 
   for (int i = 1; i <= argc; i++) {
     rep = args[i];
-    replaceall(code, L"#" + towstring(i + dec), rep);
+    replaceall(code, u"#" + tou16string(i + dec), rep);
   }
   // push back as returned value (inflated macro)
   args.push_back(code);
 }
 
 void NewEnvironmentMacro::addNewEnvironment(
-  const wstring& name,
-  const wstring& begDef, const wstring& endDef,
+  const u16string& name,
+  const u16string& begDef, const u16string& endDef,
   int argc
 ) {
-  wstring n = name + L"@env";
-  wstring def = begDef + L" #" + towstring(argc + 1) + L" " + endDef;
+  u16string n = name + u"@env";
+  u16string def = begDef + u" #" + tou16string(argc + 1) + u" " + endDef;
   addNewCommand(n, def, argc + 1);
 }
 
 void NewEnvironmentMacro::addRenewEnvironment(
-  const wstring& name,
-  const wstring& begDef, const wstring& endDef,
+  const u16string& name,
+  const u16string& begDef, const u16string& endDef,
   int argc
 ) {
-  if (_codes.find(name + L"@env") == _codes.end()) {
+  if (_codes.find(name + u"@env") == _codes.end()) {
     throw ex_parse(
       "Environment " + wide2utf8(name)
       + "is not defined! Use newenvironment instead!"
     );
   }
   addRenewCommand(
-    name + L"@env",
-    begDef + L" #" + towstring(argc + 1) + L" " + endDef,
+    name + u"@env",
+    begDef + u" #" + tou16string(argc + 1) + u" " + endDef,
     argc + 1
   );
 }
@@ -129,13 +129,13 @@ void NewCommandMacro::_free_() {
   delete _instance;
 }
 
-void MacroInfo::add(const wstring& name, MacroInfo* mac) {
+void MacroInfo::add(const u16string& name, MacroInfo* mac) {
   auto it = _commands.find(name);
   if (it != _commands.end()) delete it->second;
   _commands[name] = mac;
 }
 
-MacroInfo* MacroInfo::get(const std::wstring& name) {
+MacroInfo* MacroInfo::get(const std::u16string& name) {
   auto it = _commands.find(name);
   if (it == _commands.end()) return nullptr;
   return it->second;
@@ -147,7 +147,7 @@ void MacroInfo::_free_() {
 
 sptr<Atom> PreDefMacro::invoke(
   TeXParser& tp,
-  vector<wstring>& args
+  vector<u16string>& args
 ) {
   try {
     return _delegate(tp, args);

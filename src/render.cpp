@@ -20,7 +20,7 @@ TeXRender::TeXRender(const sptr<Box>& box, float textSize, bool trueValues) {
     _textSize = textSize;
   }
   if (!trueValues) _insets += (int) (0.18f * textSize);
-  if (Box::DEBUG) {
+  if (Box::DEBUG_MODE) {
     const auto group = wrap(box);
     _box = group;
     BoxFilter filter = [](auto b) {

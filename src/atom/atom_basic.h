@@ -54,17 +54,17 @@ public:
 /** The string rendering is made in using Graphics2D */
 class TextRenderingAtom : public Atom {
 private:
-  std::wstring _str;
+  std::u16string _str;
   int _type;
   const FontInfos* _infos;
 
 public:
   TextRenderingAtom() = delete;
 
-  TextRenderingAtom(std::wstring str, int type)
+  TextRenderingAtom(std::u16string str, int type)
     : _str(std::move(str)), _type(type), _infos(nullptr) {}
 
-  TextRenderingAtom(std::wstring str, const FontInfos* info)
+  TextRenderingAtom(std::u16string str, const FontInfos* info)
     : _str(std::move(str)), _type(0), _infos(info) {}
 
   sptr<Box> createBox(Environment& env) override;

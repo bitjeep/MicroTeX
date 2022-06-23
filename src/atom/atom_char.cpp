@@ -71,7 +71,7 @@ sptr<SymbolAtom> SymbolAtom::get(const string& name) {
 }
 
 Char CharAtom::getChar(TeXFont& tf, TexStyle style, bool smallCap) {
-  wchar_t chr = _c;
+  char16_t chr = _c;
   if (smallCap) {
     if (islower(_c)) chr = toupper(_c);
   }

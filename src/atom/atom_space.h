@@ -61,7 +61,7 @@ public:
    * Get the unit and length from given string. The string must be in the format: a number
    * following with the unit (e.g. 10px, 1cm, 8.2em, ...) or (UnitType::pixel, 0) will be returned.
    */
-  static std::pair<UnitType, float> getLength(const std::wstring& lgth);
+  static std::pair<UnitType, float> getLength(const std::u16string& lgth);
 
   __decl_clone(SpaceAtom)
 };

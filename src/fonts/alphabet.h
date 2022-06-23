@@ -19,12 +19,12 @@ public:
   static const UnicodeBlock GREEK_EXTENDED;
   static const UnicodeBlock UNKNOWN;
 
-  const wchar_t _start, _end;
+  const char16_t _start, _end;
 
-  UnicodeBlock(wchar_t codePointStart, wchar_t codePointEnd)
+  UnicodeBlock(char16_t codePointStart, char16_t codePointEnd)
       : _start(codePointStart), _end(codePointEnd) {}
 
-  bool contains(wchar_t c) const;
+  bool contains(char16_t c) const;
 
   bool operator==(const UnicodeBlock& ub) const;
 
@@ -32,9 +32,9 @@ public:
 
   bool operator>(const UnicodeBlock& ub) const;
 
-  static const UnicodeBlock& define(wchar_t codePointStart, wchar_t codePointEnd);
+  static const UnicodeBlock& define(char16_t codePointStart, char16_t codePointEnd);
 
-  static const UnicodeBlock& of(wchar_t c);
+  static const UnicodeBlock& of(char16_t c);
 };
 
 class AlphabetRegistration {

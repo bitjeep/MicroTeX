@@ -70,7 +70,7 @@
  * 
  *      [left-code, right-code, lig-code]
  */
-#define LIGTURES_START __start_def(wchar_t)
+#define LIGTURES_START __start_def(char16_t)
 #define LIGTURES_END   __end_def(__ligtures)
 
 /**

@@ -23,9 +23,9 @@ private:
   IndexedArray<int, 3, 1> _nextLargers;  // largers, e.g. sigma
   IndexedArray<float, 5, 1> _metrics;      // metrics
   IndexedArray<float, 3, 2> _kern;         // kerning
-  IndexedArray<wchar_t, 3, 2> _lig;          // ligatures
+  IndexedArray<char16_t, 3, 2> _lig;          // ligatures
 
-  wchar_t _skewChar;
+  char16_t _skewChar;
   // basic informations
   float _xHeight, _space, _quad;
   // BOLD, ROMAN, SANS-SERIF, TYPE-WIRTER, ITALIC
@@ -41,7 +41,7 @@ private:
     // default various ids
     _boldId = _romanId = _ssId = _ttId = _itId = _id;
     // the skew char
-    _skewChar = (wchar_t) -1;
+    _skewChar = (char16_t) -1;
     _font = nullptr;
   }
 
@@ -89,8 +89,8 @@ public:
     _nextLargers = IndexedArray<int, 3, 1>(arr, len, autoDelete);
   }
 
-  inline void __ligtures(const wchar_t* arr, int len, bool autoDelete = false) {
-    _lig = IndexedArray<wchar_t, 3, 2>(arr, len, autoDelete);
+  inline void __ligtures(const char16_t* arr, int len, bool autoDelete = false) {
+    _lig = IndexedArray<char16_t, 3, 2>(arr, len, autoDelete);
   }
 
   inline void __kerns(const float* arr, int len, bool autoDelete = false) {
@@ -113,18 +113,18 @@ public:
 
   inline void __boldId(int id) { _boldId = id == -1 ? _id : id; }
 
-  inline void __skewChar(wchar_t c) { _skewChar = c; }
+  inline void __skewChar(char16_t c) { _skewChar = c; }
 
   /**********************************************************************************************/
 
-  const float* const getMetrics(wchar_t ch) const;
+  const float* const getMetrics(char16_t ch) const;
 
-  const int* const getExtension(wchar_t ch) const;
+  const int* const getExtension(char16_t ch) const;
 
   // FIXME
   // workaround for the MSVC's LNK2019 error
   // it should be implemented in the font_info.cpp file
-  sptr<CharFont> getNextLarger(wchar_t ch) const {
+  sptr<CharFont> getNextLarger(char16_t ch) const {
     const int* const item = _nextLargers((int) ch);
     if (item == nullptr) return nullptr;
     return sptrOf<CharFont>(item[1], item[2]);
@@ -133,13 +133,13 @@ public:
   // FIXME
   // workaround for the MSVS's LNK2019 error
   // it should be implemented in the font_info.cpp file
-  sptr<CharFont> getLigture(wchar_t left, wchar_t right) const {
-    const wchar_t* const item = _lig(left, right);
+  sptr<CharFont> getLigture(char16_t left, char16_t right) const {
+    const char16_t* const item = _lig(left, right);
     if (item == nullptr) return nullptr;
     return sptrOf<CharFont>(item[2], _id);
   }
 
-  float getKern(wchar_t left, wchar_t right, float factor) const;
+  float getKern(char16_t left, char16_t right, float factor) const;
 
   void setVariousId(
     const std::string& bold,
@@ -156,7 +156,7 @@ public:
 
   inline float getXHeight(float factor) const { return _xHeight * factor; }
 
-  inline wchar_t getSkewChar() const { return _skewChar; }
+  inline char16_t getSkewChar() const { return _skewChar; }
 
   inline bool hasSpace() const { return _space > PREC; }
 

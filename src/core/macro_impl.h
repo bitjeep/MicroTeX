@@ -34,12 +34,12 @@ inline macro(undebug) {
 #endif  // GRAPHICS_DEBUG
 
 inline macro(fatalIfCmdConflict) {
-  NewCommandMacro::_errIfConflict = args[1] == L"true";
+  NewCommandMacro::_errIfConflict = args[1] == u"true";
   return nullptr;
 }
 
 inline macro(breakEverywhere) {
-  RowAtom::_breakEveywhere = args[1] == L"true";
+  RowAtom::_breakEveywhere = args[1] == u"true";
   return nullptr;
 }
 
@@ -109,25 +109,25 @@ inline macro(st) {
 }
 
 inline macro(Braket) {
-  std::wstring str(args[1]);
-  replaceall(str, L"\\|", L"\\middle\\vert ");
-  return Formula(tp, L"\\left\\langle " + str + L"\\right\\rangle")._root;
+  std::u16string str(args[1]);
+  replaceall(str, u"\\|", u"\\middle\\vert ");
+  return Formula(tp, u"\\left\\langle " + str + u"\\right\\rangle")._root;
 }
 
 inline macro(Set) {
-  std::wstring str(args[1]);
-  replacefirst(str, L"\\|", L"\\middle\\vert ");
-  return Formula(tp, L"\\left\\{" + str + L"\\right\\}")._root;
+  std::u16string str(args[1]);
+  replacefirst(str, u"\\|", u"\\middle\\vert ");
+  return Formula(tp, u"\\left\\{" + str + u"\\right\\}")._root;
 }
 
 inline macro(spATbreve) {
-  auto* vra = new VRowAtom(Formula(L"\\displaystyle\\!\\breve{}")._root);
+  auto* vra = new VRowAtom(Formula(u"\\displaystyle\\!\\breve{}")._root);
   vra->setRaise(UnitType::ex, 0.6f);
   return sptrOf<SmashedAtom>(sptr<Atom>(vra), "");
 }
 
 inline macro(spAThat) {
-  auto* vra = new VRowAtom(Formula(L"\\displaystyle\\widehat{}")._root);
+  auto* vra = new VRowAtom(Formula(u"\\displaystyle\\widehat{}")._root);
   vra->setRaise(UnitType::ex, 0.6f);
   return sptrOf<SmashedAtom>(sptr<Atom>(vra), "");
 }
@@ -166,7 +166,7 @@ inline macro(atop) {
 
 inline sptr<Atom> _choose(
   const std::string& left, const std::string& right,
-  TeXParser& tp, std::vector<std::wstring>& args
+  TeXParser& tp, std::vector<std::u16string>& args
 ) {
   auto num = tp.popFormulaAtom();
   auto den = Formula(tp, tp.getOverArgument(), false)._root;
@@ -196,7 +196,7 @@ inline macro(brace) {
 
 inline sptr<Atom> _cancel(
   int cancelType,
-  TeXParser& tp, std::vector<std::wstring>& args) {
+  TeXParser& tp, std::vector<std::u16string>& args) {
   auto base = Formula(tp, args[1], false)._root;
   if (base == nullptr)
     throw ex_parse("Cancel content must not be empty!");
@@ -371,7 +371,7 @@ inline macro(prescript) {
 
 inline sptr<Atom> _overunder(
   TeXParser& tp,
-  std::vector<std::wstring>& args,
+  std::vector<std::u16string>& args,
   const std::string& name,
   bool isOver
 ) {
@@ -481,12 +481,12 @@ inline macro(iddots) {
 }
 
 inline macro(leftparenthesis) {
-  std::wstring grp = tp.getGroup(L"\\(", L"\\)");
+  std::u16string grp = tp.getGroup(u"\\(", u"\\)");
   return sptrOf<MathAtom>(Formula(tp, grp, false)._root, TexStyle::text);
 }
 
 inline macro(leftbracket) {
-  std::wstring grp = tp.getGroup(L"\\[", L"\\]");
+  std::u16string grp = tp.getGroup(u"\\[", u"\\]");
   return sptrOf<MathAtom>(Formula(tp, grp, false)._root, TexStyle::display);
 }
 
@@ -841,7 +841,7 @@ inline macro(phantom) {
 
 inline sptr<Atom> _big(
   TeXParser& tp,
-  std::vector<std::wstring>& args,
+  std::vector<std::u16string>& args,
   int size,
   AtomType type = AtomType::none
 ) {
@@ -1298,11 +1298,11 @@ inline macro(char) {
   }
   int n = 0;
   str2int(x, n, radix);
-  return tp.convertCharacter((wchar_t) n, true);
+  return tp.convertCharacter((char16_t) n, true);
 }
 
 inline macro(T) {
-  return sptrOf<RotateAtom>(Formula(tp, args[1])._root, 180.f, L"origin=cc");
+  return sptrOf<RotateAtom>(Formula(tp, args[1])._root, 180.f, u"origin=cc");
 }
 
 inline macro(textcircled) {

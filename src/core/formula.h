@@ -56,8 +56,8 @@ public:
   static float PIXELS_PER_POINT;
 
   // predefined TeX formulas
-  static std::map<std::wstring, sptr<Formula>> _predefinedTeXFormulas;
-  static std::map<std::wstring, std::wstring> _predefinedTeXFormulasAsString;
+  static std::map<std::u16string, sptr<Formula>> _predefinedTeXFormulas;
+  static std::map<std::u16string, std::u16string> _predefinedTeXFormulasAsString;
 
   // character-to-symbol and character-to-delimiter mappings
   static std::map<int, std::string> _symbolMappings;
@@ -80,12 +80,12 @@ public:
    *
    * @throw ex_parse if the string could not be parsed correctly
    */
-  Formula(const TeXParser& tp, const std::wstring& latex);
+  Formula(const TeXParser& tp, const std::u16string& latex);
 
-  Formula(const TeXParser& tp, const std::wstring& latex, bool preprocess);
+  Formula(const TeXParser& tp, const std::u16string& latex, bool preprocess);
 
   Formula(
-    const TeXParser& tp, const std::wstring& latex,
+    const TeXParser& tp, const std::u16string& latex,
     const std::string& textStyle, bool preprocess,
     bool isMathMode
   );
@@ -101,16 +101,16 @@ public:
    *
    * @throw ex_parse if the string could not be parsed correctly
    */
-  explicit Formula(const std::wstring& latex);
+  explicit Formula(const std::u16string& latex);
 
-  Formula(const std::wstring& latex, bool preprocess);
+  Formula(const std::u16string& latex, bool preprocess);
 
   /**
    * Change the text of the Formula and regenerate the root atom.
    *
    * @param latex the latex formula
    */
-  void setLaTeX(const std::wstring& latex);
+  void setLaTeX(const std::u16string& latex);
 
   /** Inserts an a at the end of the current formula. */
   Formula* add(const sptr<Atom>& a);
@@ -130,7 +130,7 @@ public:
    * @throw ex_formula_not_found
    *      if no predefined Formula is found with the given name
    */
-  static sptr<Formula> get(const std::wstring& name);
+  static sptr<Formula> get(const std::u16string& name);
 
   /**
    * Set the DPI of target

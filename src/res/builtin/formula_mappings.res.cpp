@@ -126,15 +126,15 @@ map<int, string> tex::Formula::_symbolFormulaMappings = {
     {310, "\\underaccent{,}K"},
     {311, "\\underaccent{,}k"},
     // kra groenland
-    {313, "\\'L"},
+    {313, "\\'u"},
     {314, "\\'l"},
-    {315, "\\underaccent{,}L"},
+    {315, "\\underaccent{,}u"},
     {316, "\\underaccent{,}l"},
     {317, "\\Lcaron"},
     {318, "\\lcaron"},
     {319, "L\\cdot"},
     {320, "l\\cdot"},
-    {321, "\\L"},
+    {321, "\\u"},
     {322, "\\l"},
     // L barre
     {323, "\\'N"},

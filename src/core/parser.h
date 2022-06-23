@@ -9,13 +9,13 @@
 
 namespace tex {
 
-using Args = std::vector<std::wstring>;
+using Args = std::vector<std::u16string>;
 
 /**
  * Convert a character to roman-number if it is a digit localized
  * @param c character to be converted
  */
-wchar_t convertToRomanNumber(wchar_t c);
+char16_t convertToRomanNumber(char16_t c);
 
 class Formula;
 
@@ -24,7 +24,7 @@ class MacroInfo;
 /** This class implements a parser for latex formulas */
 class TeXParser {
 private:
-  std::wstring _latex;
+  std::u16string _latex;
   int _pos, _spos, _len;
   int _line, _col;
   int _group;
@@ -36,39 +36,39 @@ private:
   bool _hideUnknownChar;
 
   /** escape character */
-  static const wchar_t ESCAPE;
+  static const char16_t ESCAPE;
   /** grouping characters (for parsing) */
-  static const wchar_t L_GROUP;
-  static const wchar_t R_GROUP;
-  static const wchar_t L_BRACK;
-  static const wchar_t R_BRACK;
-  static const wchar_t DOLLAR;
-  static const wchar_t DQUOTE;
+  static const char16_t L_GROUP;
+  static const char16_t R_GROUP;
+  static const char16_t L_BRACK;
+  static const char16_t R_BRACK;
+  static const char16_t DOLLAR;
+  static const char16_t DQUOTE;
   /** percent char for comments */
-  static const wchar_t PERCENT;
+  static const char16_t PERCENT;
   /** script character (for parsing) */
-  static const wchar_t SUB_SCRIPT;
-  static const wchar_t SUPER_SCRIPT;
-  static const wchar_t PRIME;
-  static const wchar_t PRIME_UTF;
-  static const wchar_t BACKPRIME;
-  static const wchar_t DEGRE;
+  static const char16_t SUB_SCRIPT;
+  static const char16_t SUPER_SCRIPT;
+  static const char16_t PRIME;
+  static const char16_t PRIME_UTF;
+  static const char16_t BACKPRIME;
+  static const char16_t DEGRE;
   /** scripts to formula map */
-  static const std::map<wchar_t, char> SUP_SCRIPT_MAP;
-  static const std::map<wchar_t, char> SUB_SCRIPT_MAP;
+  static const std::map<char16_t, char> SUP_SCRIPT_MAP;
+  static const std::map<char16_t, char> SUB_SCRIPT_MAP;
 
-  static const std::set<std::wstring> _unparsedContents;
+  static const std::set<std::u16string> _unparsedContents;
 
   /** Preprocess parse string */
   void preprocess();
 
-  sptr<Atom> getScripts(wchar_t first);
+  sptr<Atom> getScripts(char16_t first);
 
-  std::wstring getCommand();
+  std::u16string getCommand();
 
   sptr<Atom> processEscape();
 
-  void insert(int beg, int end, const std::wstring& formula);
+  void insert(int beg, int end, const std::u16string& formula);
 
   /**
    * Return a string with command, options and arguments.
@@ -76,30 +76,30 @@ private:
    * @param command name of command
    * @return command with arguments string with format: \cmd[opt][...]{arg}{...}
    */
-  std::wstring getCommandWithArgs(const std::wstring& command);
+  std::u16string getCommandWithArgs(const std::u16string& command);
 
   /**
    * Process the given TeX command (by parsing following command
    * arguments in the parse string).
    */
-  sptr<Atom> processCommands(const std::wstring& cmd, MacroInfo* mac);
+  sptr<Atom> processCommands(const std::u16string& cmd, MacroInfo* mac);
 
   void skipWhiteSpace();
 
   /** Replace the script-characters with command. */
   bool replaceScript();
 
-  void preprocess(std::wstring& cmd, Args& args, int& pos);
+  void preprocess(std::u16string& cmd, Args& args, int& pos);
 
-  void preprocessNewCmd(std::wstring& cmd, Args& args, int& pos);
+  void preprocessNewCmd(std::u16string& cmd, Args& args, int& pos);
 
-  void inflateNewCmd(std::wstring& cmd, Args& args, int& pos);
+  void inflateNewCmd(std::u16string& cmd, Args& args, int& pos);
 
-  void inflateEnv(std::wstring& cmd, Args& args, int& pos);
+  void inflateEnv(std::u16string& cmd, Args& args, int& pos);
 
   void init(
     bool isPartial,
-    const std::wstring& latex,
+    const std::u16string& latex,
     Formula* formula,
     bool firstPass
   );
@@ -115,7 +115,7 @@ public:
    * @param formula the formula where to put the atoms
    * @throw ex_parse if the string could not be parsed correctly
    */
-  TeXParser(const std::wstring& latex, Formula* formula) {
+  TeXParser(const std::u16string& latex, Formula* formula) {
     init(true, latex, formula, true);
   }
 
@@ -126,7 +126,7 @@ public:
    * @param formula the formula where to put the atoms
    * @throw ex_parse if the string could not be parsed correctly
    */
-  TeXParser(bool isPartial, const std::wstring& latex, Formula* formula) {
+  TeXParser(bool isPartial, const std::u16string& latex, Formula* formula) {
     init(isPartial, latex, formula, true);
   }
 
@@ -141,7 +141,7 @@ public:
    */
   TeXParser(
     bool isPartial,
-    const std::wstring& latex,
+    const std::u16string& latex,
     Formula* formula,
     bool preprocess
   ) {
@@ -156,7 +156,7 @@ public:
    *
    * @throw ex_parse if the string could not be parsed correctly
    */
-  TeXParser(const std::wstring& latex, Formula* formula, bool preprocess) {
+  TeXParser(const std::u16string& latex, Formula* formula, bool preprocess) {
     init(true, latex, formula, preprocess);
   }
 
@@ -174,7 +174,7 @@ public:
    */
   TeXParser(
     bool isPartial,
-    const std::wstring& latex,
+    const std::u16string& latex,
     Formula* formula,
     bool preprocess,
     bool isMathMode
@@ -184,7 +184,7 @@ public:
   }
 
   /** Reset the parser with a new latex expression */
-  void reset(const std::wstring& latex);
+  void reset(const std::u16string& latex);
 
   /** Return true if we get a partial formula */
   inline bool isPartial() const { return _isPartial; }
@@ -241,7 +241,7 @@ public:
    * <li> Forward to the end of the parse string if no group was in process
    * <li> Otherwise get the balanced group embraced by '{' and '}' and forward
    */
-  std::wstring forwardBalancedGroup();
+  std::u16string forwardBalancedGroup();
 
   /**
    * Add a new row when the parser is in array mode
@@ -265,7 +265,7 @@ public:
    *
    * @throw ex_parse if the contents are badly enclosed
    */
-  std::wstring getDollarGroup(wchar_t openClose);
+  std::u16string getDollarGroup(char16_t openClose);
 
   /**
    * Get the contents between two delimiters
@@ -276,7 +276,7 @@ public:
    *
    * @throw ex_parse if the contents are badly enclosed
    */
-  std::wstring getGroup(wchar_t open, wchar_t close);
+  std::u16string getGroup(char16_t open, char16_t close);
 
   /**
    * Get the contents between two strings as in \\begin{foo}... \\end{foo}
@@ -287,7 +287,7 @@ public:
    * 
    * @throw ex_parse if the contents are badly enclosed
    */
-  std::wstring getGroup(const std::wstring& open, const std::wstring& close);
+  std::u16string getGroup(const std::u16string& open, const std::u16string& close);
 
   /**
    * Get the argument of a command in his atomic format
@@ -299,7 +299,7 @@ public:
   sptr<Atom> getArgument();
 
   /** Get the supscript argument */
-  std::wstring getOverArgument();
+  std::u16string getOverArgument();
 
   /**
    * Get the unit and length from given string. The string must be in the format: a digital
@@ -318,7 +318,7 @@ public:
    *
    * @throw ex_parse if the character is unknown
    */
-  sptr<Atom> convertCharacter(wchar_t c, bool oneChar);
+  sptr<Atom> convertCharacter(char16_t c, bool oneChar);
 
   /**
    * Get the arguments and the options of a command
@@ -340,13 +340,13 @@ public:
    * @param cmd the command's name
    * @return the validity of the name
    */
-  bool isValidName(const std::wstring& cmd) const;
+  bool isValidName(const std::u16string& cmd) const;
 
   /**
    * Test the validity of a character in a command. It must contains only
    * alpha characters and eventually a @ if makeAtletter activated
    */
-  inline bool isValidCharInCmd(wchar_t ch) const {
+  inline bool isValidCharInCmd(char16_t ch) const {
     return isalpha(ch) || (_atIsLetter != 0 && ch == '@');
   }
 };

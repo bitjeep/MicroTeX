@@ -13,20 +13,20 @@ class TeXParser;
 
 class Macro {
 public:
-  virtual void execute(TeXParser& tp, std::vector<std::wstring>& args) = 0;
+  virtual void execute(TeXParser& tp, std::vector<std::u16string>& args) = 0;
 
   virtual ~Macro() = default;
 };
 
 class NewCommandMacro : public Macro {
 protected:
-  static std::map<std::wstring, std::wstring> _codes;
-  static std::map<std::wstring, std::wstring> _replacements;
+  static std::map<std::u16string, std::u16string> _codes;
+  static std::map<std::u16string, std::u16string> _replacements;
   static Macro* _instance;
 
-  static void checkNew(const std::wstring& name);
+  static void checkNew(const std::u16string& name);
 
-  static void checkRenew(const std::wstring& name);
+  static void checkRenew(const std::u16string& name);
 
 public:
   /**
@@ -36,35 +36,35 @@ public:
    */
   static bool _errIfConflict;
 
-  void execute(TeXParser& tp, std::vector<std::wstring>& args) override;
+  void execute(TeXParser& tp, std::vector<std::u16string>& args) override;
 
   static void addNewCommand(
-    const std::wstring& name,
-    const std::wstring& code,
+    const std::u16string& name,
+    const std::u16string& code,
     int argc
   );
 
   static void addNewCommand(
-    const std::wstring& name,
-    const std::wstring& code,
+    const std::u16string& name,
+    const std::u16string& code,
     int argc,
-    const std::wstring& def
+    const std::u16string& def
   );
 
   static void addRenewCommand(
-    const std::wstring& name,
-    const std::wstring& code,
+    const std::u16string& name,
+    const std::u16string& code,
     int argc
   );
 
   static void addRenewCommand(
-    const std::wstring& name,
-    const std::wstring& code,
+    const std::u16string& name,
+    const std::u16string& code,
     int argc,
-    const std::wstring& def
+    const std::u16string& def
   );
 
-  static bool isMacro(const std::wstring& name);
+  static bool isMacro(const std::u16string& name);
 
   static void _init_();
 
@@ -76,29 +76,29 @@ public:
 class NewEnvironmentMacro : public NewCommandMacro {
 public:
   static void addNewEnvironment(
-    const std::wstring& name,
-    const std::wstring& begDef,
-    const std::wstring& endDef,
+    const std::u16string& name,
+    const std::u16string& begDef,
+    const std::u16string& endDef,
     int argc
   );
 
   static void addRenewEnvironment(
-    const std::wstring& name,
-    const std::wstring& begDef,
-    const std::wstring& endDef,
+    const std::u16string& name,
+    const std::u16string& begDef,
+    const std::u16string& endDef,
     int argc
   );
 };
 
 class MacroInfo {
 public:
-  static std::map<std::wstring, MacroInfo*> _commands;
+  static std::map<std::u16string, MacroInfo*> _commands;
 
   /** Add a macro, replace it if the macro is exists. */
-  static void add(const std::wstring& name, MacroInfo* mac);
+  static void add(const std::u16string& name, MacroInfo* mac);
 
   /** Get the macro info from given name, return nullptr if not found. */
-  static MacroInfo* get(const std::wstring& name);
+  static MacroInfo* get(const std::u16string& name);
 
   // Number of arguments
   const int _argc;
@@ -118,7 +118,7 @@ public:
 
   virtual sptr<Atom> invoke(
     TeXParser& tp,
-    std::vector<std::wstring>& args) {
+    std::vector<std::u16string>& args) {
     return nullptr;
   }
 
@@ -141,7 +141,7 @@ public:
 
   sptr<Atom> invoke(
     TeXParser& tp,
-    std::vector<std::wstring>& args
+    std::vector<std::u16string>& args
   ) override {
     _macro->execute(tp, args);
     return nullptr;
@@ -150,7 +150,7 @@ public:
 
 typedef sptr<Atom> (* MacroDelegate)(
   TeXParser& tp,
-  std::vector<std::wstring>& args
+  std::vector<std::u16string>& args
 );
 
 class PreDefMacro : public MacroInfo {
@@ -168,7 +168,7 @@ public:
 
   sptr<Atom> invoke(
     TeXParser& tp,
-    std::vector<std::wstring>& args
+    std::vector<std::u16string>& args
   ) override;
 };
 

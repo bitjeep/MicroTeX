@@ -111,7 +111,7 @@ sptr<TeXFont> DefaultTeXFont::copy() {
     _size, _factor, _isBold, _isRoman, _isSs, _isTt, _isIt);
 }
 
-Char DefaultTeXFont::getChar(wchar_t c, const vector<CharFont*>& cf, TexStyle style) {
+Char DefaultTeXFont::getChar(char16_t c, const vector<CharFont*>& cf, TexStyle style) {
   int kind, offset;
   if (c >= '0' && c <= '9') {
     kind = NUMBERS;
@@ -132,7 +132,7 @@ Char DefaultTeXFont::getChar(wchar_t c, const vector<CharFont*>& cf, TexStyle st
   return getChar(CharFont(x->chr + offset, x->fontId), style);
 }
 
-Char DefaultTeXFont::getDefaultChar(wchar_t c, TexStyle style) {
+Char DefaultTeXFont::getDefaultChar(char16_t c, TexStyle style) {
   // the default text style mappings will always exist,
   // because it's checked during parsing
   if (c >= '0' && c <= '9') return getChar(c, _defaultTextStyleMappings[NUMBERS], style);
@@ -143,7 +143,7 @@ Char DefaultTeXFont::getDefaultChar(wchar_t c, TexStyle style) {
 }
 
 Char DefaultTeXFont::getChar(
-  wchar_t c,
+  char16_t c,
   const string& textStyle,
   TexStyle style) {
   // find first

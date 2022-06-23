@@ -29,7 +29,7 @@ protected:
   }
 
 public:
-  static bool DEBUG;
+  static bool DEBUG_MODE;
 
   /**
    * The width of this box, i.e. the value that will be used for further

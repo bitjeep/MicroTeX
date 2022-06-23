@@ -3,8 +3,8 @@
 using namespace std;
 using namespace tex;
 
-string tex::wide2utf8(const std::wstring& src) {
-  const wchar_t* in = src.c_str();
+string tex::wide2utf8(const std::u16string& src) {
+  const char16_t* in = src.c_str();
   string out;
   unsigned int codepoint = 0;
   for (; *in != 0; ++in) {
@@ -38,9 +38,9 @@ string tex::wide2utf8(const std::wstring& src) {
   return out;
 }
 
-wstring tex::utf82wide(const std::string& src) {
+u16string tex::utf82wide(const std::string& src) {
   const char* in = src.c_str();
-  wstring out;
+  u16string out;
   if (in == nullptr) return out;
   unsigned int codepoint;
   while (*in != 0) {
@@ -59,10 +59,10 @@ wstring tex::utf82wide(const std::string& src) {
     ++in;
     if (((*in & 0xc0) != 0x80) && (codepoint <= 0x10ffff)) {
       if (codepoint > 0xffff) {
-        out.append(1, static_cast<wchar_t>(0xd800 + (codepoint >> 10)));
-        out.append(1, static_cast<wchar_t>(0xdc00 + (codepoint & 0x03ff)));
+        out.append(1, static_cast<char16_t>(0xd800 + (codepoint >> 10)));
+        out.append(1, static_cast<char16_t>(0xdc00 + (codepoint & 0x03ff)));
       } else if (codepoint < 0xd800 || codepoint >= 0xe000)
-        out.append(1, static_cast<wchar_t>(codepoint));
+        out.append(1, static_cast<char16_t>(codepoint));
     }
   }
   return out;

@@ -12,26 +12,26 @@ struct __Versions {
 };
 
 struct __Metrics {
-  wchar_t ch;
+  char16_t ch;
   float   width, height, depth, italic;
 };
 
 struct __Extension {
-  wchar_t ch;
+  char16_t ch;
   int     rep, top, mid, bot;
 };
 
 struct __Kern {
-  wchar_t left, right;
+  char16_t left, right;
   float   kern;
 };
 
 struct __Lig {
-  wchar_t left, right, lig;
+  char16_t left, right, lig;
 };
 
 struct __Larger {
-  wchar_t code, larger;
+  char16_t code, larger;
   int     fontId;
 };
 
@@ -43,7 +43,7 @@ struct __BasicInfo {
   std::vector<__Lig>       ligs;
 };
 
-typedef void (*ChildParser)(const tinyxml2::XMLElement*, wchar_t, __BasicInfo&);
+typedef void (*ChildParser)(const tinyxml2::XMLElement*, char16_t, __BasicInfo&);
 
 /**
  * Parses the font information from an XML-file
@@ -72,10 +72,10 @@ private:
   const tinyxml2::XMLElement*              _root;
   std::string                         _base;
 
-  static void parse_extension(const tinyxml2::XMLElement*, wchar_t, __BasicInfo&);
-  static void parse_kern(const tinyxml2::XMLElement*, wchar_t, __BasicInfo&);
-  static void parse_lig(const tinyxml2::XMLElement*, wchar_t, __BasicInfo&);
-  static void parse_larger(const tinyxml2::XMLElement*, wchar_t, __BasicInfo&);
+  static void parse_extension(const tinyxml2::XMLElement*, char16_t, __BasicInfo&);
+  static void parse_kern(const tinyxml2::XMLElement*, char16_t, __BasicInfo&);
+  static void parse_lig(const tinyxml2::XMLElement*, char16_t, __BasicInfo&);
+  static void parse_larger(const tinyxml2::XMLElement*, char16_t, __BasicInfo&);
 
   void parseStyleMappings(std::map<std::string, std::vector<CharFont*>>& styles);
 

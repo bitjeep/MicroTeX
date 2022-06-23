@@ -33,9 +33,9 @@ macro(rule) {
 
 macro(cfrac) {
   Alignment numAlign = Alignment::center;
-  if (args[3] == L"r") {
+  if (args[3] == u"r") {
     numAlign = Alignment::right;
-  } else if (args[3] == L"l") {
+  } else if (args[3] == u"l") {
     numAlign = Alignment::left;
   }
   Formula num(tp, args[1], false);
@@ -168,11 +168,11 @@ macro(abovewithdelims) {
 }
 
 macro(textstyles) {
-  wstring style(args[0]);
-  if (style == L"frak") style = L"mathfrak";
-  else if (style == L"Bbb") style = L"mathbb";
-  else if (style == L"bold") return sptrOf<BoldAtom>(Formula(tp, args[1], false)._root);
-  else if (style == L"cal") style = L"mathcal";
+  u16string style(args[0]);
+  if (style == u"frak") style = u"mathfrak";
+  else if (style == u"Bbb") style = u"mathbb";
+  else if (style == u"bold") return sptrOf<BoldAtom>(Formula(tp, args[1], false)._root);
+  else if (style == u"cal") style = u"mathcal";
 
   FontInfos* info = nullptr;
   auto it = Formula::_externalFontMap.find(UnicodeBlock::BASIC_LATIN);
@@ -237,7 +237,7 @@ macro(accentbiss) {
 }
 
 macro(left) {
-  wstring grep = tp.getGroup(L"\\left", L"\\right");
+  u16string grep = tp.getGroup(u"\\left", u"\\right");
 
   auto left = Formula(tp, args[1], false)._root;
   auto* big = dynamic_cast<BigDelimiterAtom*>(left.get());
@@ -266,9 +266,9 @@ macro(intertext) {
   if (!tp.isArrayMode())
     throw ex_parse("Command \\intertext must used in array environment!");
 
-  wstring str(args[1]);
-  replaceall(str, L"^{\\prime}", L"\'");
-  replaceall(str, L"^{\\prime\\prime}", L"\'\'");
+  u16string str(args[1]);
+  replaceall(str, u"^{\\prime}", u"\'");
+  replaceall(str, u"^{\\prime\\prime}", u"\'\'");
 
   auto ra = sptrOf<RomanAtom>(Formula(tp, str, "mathnormal", false, false)._root);
   ra->_type = AtomType::interText;
@@ -279,7 +279,7 @@ macro(intertext) {
 }
 
 macro(newcommand) {
-  wstring newcmd(args[1]);
+  u16string newcmd(args[1]);
   int nbArgs = 0;
   if (!tp.isValidName(newcmd))
     throw ex_parse("Invalid name for the command '" + wide2utf8(newcmd));
@@ -296,7 +296,7 @@ macro(newcommand) {
 }
 
 macro(renewcommand) {
-  wstring newcmd(args[1]);
+  u16string newcmd(args[1]);
   int nbArgs = 0;
   if (!tp.isValidName(newcmd))
     throw ex_parse("Invalid name for the command: " + wide2utf8(newcmd));
@@ -322,11 +322,11 @@ macro(raisebox) {
 macro(definecolor) {
   color c = TRANSPARENT;
   string cs = wide2utf8(args[3]);
-  if (args[2] == L"gray") {
+  if (args[2] == u"gray") {
     float f = 0;
     valueof(args[3], f);
     c = rgb(f, f, f);
-  } else if (args[2] == L"rgb") {
+  } else if (args[2] == u"rgb") {
     StrTokenizer stok(cs, ":,");
     if (stok.count() != 3)
       throw ex_parse("The color definition must have three components!");
@@ -336,7 +336,7 @@ macro(definecolor) {
     valueof(trim(G), g);
     valueof(trim(B), b);
     c = rgb(r, g, b);
-  } else if (args[2] == L"cmyk") {
+  } else if (args[2] == u"cmyk") {
     StrTokenizer stok(cs, ":,");
     if (stok.count() != 4)
       throw ex_parse("The color definition must have four components!");
@@ -357,25 +357,25 @@ macro(definecolor) {
 
 macro(sizes) {
   float f = 1;
-  if (args[0] == L"tiny")
+  if (args[0] == u"tiny")
     f = 0.5f;
-  else if (args[0] == L"scriptsize")
+  else if (args[0] == u"scriptsize")
     f = 0.7f;
-  else if (args[0] == L"footnotesize")
+  else if (args[0] == u"footnotesize")
     f = 0.8f;
-  else if (args[0] == L"small")
+  else if (args[0] == u"small")
     f = 0.9f;
-  else if (args[0] == L"normalsize")
+  else if (args[0] == u"normalsize")
     f = 1.f;
-  else if (args[0] == L"large")
+  else if (args[0] == u"large")
     f = 1.2f;
-  else if (args[0] == L"Large")
+  else if (args[0] == u"Large")
     f = 1.4f;
-  else if (args[0] == L"LARGE")
+  else if (args[0] == u"LARGE")
     f = 1.8f;
-  else if (args[0] == L"huge")
+  else if (args[0] == u"huge")
     f = 2.f;
-  else if (args[0] == L"Huge")
+  else if (args[0] == u"Huge")
     f = 2.5f;
 
   auto a = Formula(tp, tp.getOverArgument(), "", false, tp.isMathMode())._root;
@@ -384,7 +384,7 @@ macro(sizes) {
 
 macro(romannumeral) {
   int numbers[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-  string letters[] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+  string letters[] = {"M", "CM", "D", "CD", "C", "XC", "u", "Xu", "X", "IX", "V", "IV", "I"};
   string roman;
 
   int num;
@@ -401,31 +401,31 @@ macro(romannumeral) {
     tolower(roman);
   }
 
-  const wstring str = utf82wide(roman);
+  const u16string str = utf82wide(roman);
   return Formula(str, false)._root;
 }
 
 macro(muskips) {
   SpaceType type = SpaceType::none;
-  if (args[0] == L",")
+  if (args[0] == u",")
     type = SpaceType::thinMuSkip;
-  else if (args[0] == L":")
+  else if (args[0] == u":")
     type = SpaceType::medMuSkip;
-  else if (args[0] == L";")
+  else if (args[0] == u";")
     type = SpaceType::thickMuSkip;
-  else if (args[0] == L"thinspace")
+  else if (args[0] == u"thinspace")
     type = SpaceType::thinMuSkip;
-  else if (args[0] == L"medspace")
+  else if (args[0] == u"medspace")
     type = SpaceType::medMuSkip;
-  else if (args[0] == L"thickspace")
+  else if (args[0] == u"thickspace")
     type = SpaceType::thickMuSkip;
-  else if (args[0] == L"!")
+  else if (args[0] == u"!")
     type = SpaceType::negThinMuSkip;
-  else if (args[0] == L"negthinspace")
+  else if (args[0] == u"negthinspace")
     type = SpaceType::negThinMuSkip;
-  else if (args[0] == L"negmedspace")
+  else if (args[0] == u"negmedspace")
     type = SpaceType::negMedMuSkip;
-  else if (args[0] == L"negthickspace")
+  else if (args[0] == u"negthickspace")
     type = SpaceType::negThickMuSkip;
 
   return sptrOf<SpaceAtom>(type);
@@ -433,20 +433,20 @@ macro(muskips) {
 
 macro(xml) {
   map<string, string>& m = tp._formula->_xmlMap;
-  wstring str(args[1]);
-  wstring buf;
+  u16string str(args[1]);
+  u16string buf;
   size_t start = 0;
   size_t pos;
-  while ((pos = str.find(L'$')) != wstring::npos) {
+  while ((pos = str.find(L'$')) != u16string::npos) {
     if (pos < str.length() - 1) {
       start = pos;
       while (++start < str.length() && isalpha(str[start]));
-      wstring key = str.substr(pos + 1, start - pos - 1);
+      u16string key = str.substr(pos + 1, start - pos - 1);
       string x = wide2utf8(key);
       auto it = m.find(x);
       if (it != m.end()) {
         buf.append(str.substr(0, pos));
-        wstring x = utf82wide(it->second.c_str());
+        u16string x = utf82wide(it->second.c_str());
         buf.append(x);
       } else {
         buf.append(str.substr(0, start));
@@ -454,7 +454,7 @@ macro(xml) {
       str = str.substr(start);
     } else {
       buf.append(str);
-      str = L"";
+      str = u"";
     }
   }
   buf.append(str);

@@ -18,7 +18,7 @@ std::vector<const UnicodeBlock*> UnicodeBlock::_defined = {
     &GREEK_EXTENDED,
 };
 
-bool UnicodeBlock::contains(wchar_t c) const {
+bool UnicodeBlock::contains(char16_t c) const {
   // if this block is UNKNOWN, check others first
   if (*this == UNKNOWN) {
     for (auto b : _defined)
@@ -40,13 +40,13 @@ bool UnicodeBlock::operator==(const UnicodeBlock& ub) const {
   return (ub._start == _start && ub._end == _end);
 }
 
-const UnicodeBlock& UnicodeBlock::define(wchar_t codePointStart, wchar_t codePointEnd) {
+const UnicodeBlock& UnicodeBlock::define(char16_t codePointStart, char16_t codePointEnd) {
   auto ub = new UnicodeBlock(codePointStart, codePointEnd);
   _defined.push_back(ub);
   return *ub;
 }
 
-const UnicodeBlock& UnicodeBlock::of(wchar_t c) {
+const UnicodeBlock& UnicodeBlock::of(char16_t c) {
   for (auto x : _defined) {
     if (x->contains(c)) return *x;
   }

@@ -35,7 +35,7 @@ const map<string, ChildParser> DefaultTeXFontParser::_charChildParsers = {
 
 /**************************************** child parsers *******************************************/
 
-void DefaultTeXFontParser::parse_extension(const XMLElement* e, wchar_t c, __BasicInfo& f) {
+void DefaultTeXFontParser::parse_extension(const XMLElement* e, char16_t c, __BasicInfo& f) {
   __Extension ex;
   ex.ch = c;
   ex.rep = getIntAndCheck("rep", e);
@@ -45,26 +45,26 @@ void DefaultTeXFontParser::parse_extension(const XMLElement* e, wchar_t c, __Bas
   f.extensions.push_back(ex);
 }
 
-void DefaultTeXFontParser::parse_kern(const XMLElement* e, wchar_t c, __BasicInfo& f) {
+void DefaultTeXFontParser::parse_kern(const XMLElement* e, char16_t c, __BasicInfo& f) {
   __Kern kern;
   kern.left = c;
-  kern.right = (wchar_t)getIntAndCheck("code", e);
+  kern.right = (char16_t)getIntAndCheck("code", e);
   kern.kern = getFloatAndCheck("val", e);
   f.kerns.push_back(kern);
 }
 
-void DefaultTeXFontParser::parse_lig(const XMLElement* e, wchar_t c, __BasicInfo& f) {
+void DefaultTeXFontParser::parse_lig(const XMLElement* e, char16_t c, __BasicInfo& f) {
   __Lig lig;
   lig.left = c;
-  lig.right = (wchar_t)getIntAndCheck("code", e);
-  lig.lig = (wchar_t)getIntAndCheck("ligCode", e);
+  lig.right = (char16_t)getIntAndCheck("code", e);
+  lig.lig = (char16_t)getIntAndCheck("ligCode", e);
   f.ligs.push_back(lig);
 }
 
-void DefaultTeXFontParser::parse_larger(const XMLElement* e, wchar_t c, __BasicInfo& f) {
+void DefaultTeXFontParser::parse_larger(const XMLElement* e, char16_t c, __BasicInfo& f) {
   __Larger larger;
   larger.code = c;
-  larger.larger = (wchar_t)getIntAndCheck("code", e);
+  larger.larger = (char16_t)getIntAndCheck("code", e);
   larger.fontId = __id(getAttrValueAndCheckIfNotNull("fontId", e));
   f.largers.push_back(larger);
 }
@@ -73,7 +73,7 @@ void DefaultTeXFontParser::parse_larger(const XMLElement* e, wchar_t c, __BasicI
 
 void DefaultTeXFontParser::processCharElement(const XMLElement* e, __BasicInfo& info) {
   // retrieve required integer value
-  const wchar_t   ch = (wchar_t)getIntAndCheck("code", e);
+  const char16_t   ch = (char16_t)getIntAndCheck("code", e);
   __Metrics m;
   m.ch = ch;
   m.width = getOptionalFloat("width", e, 0);
@@ -130,9 +130,9 @@ void DefaultTeXFontParser::parseStyleMappings(
       }
       CharFont* f = nullptr;
       if (boldFontId.empty()) {
-        f = new CharFont((wchar_t)ch, __id(fontId));
+        f = new CharFont((char16_t)ch, __id(fontId));
       } else {
-        f = new CharFont((wchar_t)ch, __id(fontId), __id(boldFontId));
+        f = new CharFont((char16_t)ch, __id(fontId), __id(boldFontId));
       }
       charFonts[it->second] = f;
       range                 = range->NextSiblingElement("MapRange");
@@ -238,7 +238,7 @@ void DefaultTeXFontParser::parseFontDescriptions(const string& file) {
   auto   info = FontInfo::__create(__id, path, xHeight, space, quad);
 
   // attribute set
-  if (skewChar != -1) info->__skewChar((wchar_t)skewChar);
+  if (skewChar != -1) info->__skewChar((char16_t)skewChar);
   // process all "Char"-elements
   const XMLElement* e = font->FirstChildElement("Char");
 
@@ -284,7 +284,7 @@ void DefaultTeXFontParser::setupFontInfo(__BasicInfo& bi, FontInfo& fi) {
     largers[r + 2] = l.fontId;
     return i + 1;
   });
-  wchar_t* const ligtures = new wchar_t[bi.ligs.size() * 3];
+  char16_t* const ligtures = new char16_t[bi.ligs.size() * 3];
   accumulate(begin(bi.ligs), end(bi.ligs), 0, [&ligtures](const int i, const __Lig& l) {
     const size_t r  = i * 3;
     ligtures[r + 0] = l.left;
@@ -361,7 +361,7 @@ void DefaultTeXFontParser::parseSymbolMappings(
 
     while (symbol != nullptr) {
       const string  name       = getAttrValueAndCheckIfNotNull("name", symbol);
-      const wchar_t ch         = (wchar_t)getIntAndCheck("ch", symbol);
+      const char16_t ch         = (char16_t)getIntAndCheck("ch", symbol);
       const string  fontId     = getAttrValueAndCheckIfNotNull("fontId", symbol);
       string        boldFontId = "";
       obtainAttr("boldId", symbol, boldFontId);

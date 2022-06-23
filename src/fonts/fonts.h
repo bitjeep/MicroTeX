@@ -39,7 +39,7 @@ private:
 
   float _factor, _size;
 
-  Char getChar(wchar_t c, const std::vector<CharFont*>& cf, TexStyle style);
+  Char getChar(char16_t c, const std::vector<CharFont*>& cf, TexStyle style);
 
   sptr<Metrics> getMetrics(const CharFont& cf, float size);
 
@@ -117,10 +117,10 @@ public:
 
   /************************************ get char ************************************************/
 
-  Char getDefaultChar(wchar_t c, TexStyle style) override;
+  Char getDefaultChar(char16_t c, TexStyle style) override;
 
   Char getChar(
-    wchar_t c,
+    char16_t c,
     const std::string& textStyle,
     TexStyle style) override;
 
@@ -192,7 +192,7 @@ public:
 
   inline float getSkew(const CharFont& cf, TexStyle style) override {
     FontInfo* info = getInfo(cf.fontId);
-    wchar_t skew = info->getSkewChar();
+    char16_t skew = info->getSkewChar();
     if (skew == -1) return 0;
     return getKern(cf, CharFont(skew, cf.fontId), style);
   }

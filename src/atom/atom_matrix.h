@@ -68,7 +68,7 @@ enum class MatrixType : i8 {
 /** Atom represents matrix */
 class MatrixAtom : public Atom {
 private:
-  static std::map<std::wstring, std::wstring> _colspeReplacement;
+  static std::map<std::u16string, std::u16string> _colspeReplacement;
 
   static SpaceAtom _align;
 
@@ -81,7 +81,7 @@ private:
   bool _isPartial;
   bool _spaceAround;
 
-  void parsePositions(std::wstring opt, std::vector<Alignment>& lpos);
+  void parsePositions(std::u16string opt, std::vector<Alignment>& lpos);
 
   sptr<Box> generateMulticolumn(
     Environment& env,
@@ -119,14 +119,14 @@ public:
   MatrixAtom(
     bool isPartial,
     const sptr<ArrayFormula>& arr,
-    const std::wstring& options,
+    const std::u16string& options,
     bool spaceAround
   );
 
   MatrixAtom(
     bool isPartial,
     const sptr<ArrayFormula>& arr,
-    const std::wstring& options
+    const std::u16string& options
   );
 
   MatrixAtom(
@@ -137,7 +137,7 @@ public:
 
   sptr<Box> createBox(Environment& env) override;
 
-  static void defineColumnSpecifier(const std::wstring& rep, const std::wstring& spe);
+  static void defineColumnSpecifier(const std::u16string& rep, const std::u16string& spe);
 
   __decl_clone(MatrixAtom)
 };
@@ -268,7 +268,7 @@ public:
 
   MultiRowAtom() = delete;
 
-  MultiRowAtom(int n, const std::wstring& option, const sptr<Atom>& rows)
+  MultiRowAtom(int n, const std::u16string& option, const sptr<Atom>& rows)
     : _i(0), _j(0), _rows(rows), _n(n == 0 ? 1 : n) {}
 
   inline void setRowColumn(int r, int c) {

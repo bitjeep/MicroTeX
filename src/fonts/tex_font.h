@@ -44,7 +44,7 @@ public:
    *      if the text style mapping not found
    */
   virtual Char getChar(
-    wchar_t c,
+    char16_t c,
     const std::string& textStyle,
     TexStyle style) = 0;
 
@@ -77,7 +77,7 @@ public:
    *      the style in which the atom should be drawn
    * @return the Char-object specifying the given character in the default text style
    */
-  virtual Char getDefaultChar(wchar_t c, TexStyle style) = 0;
+  virtual Char getDefaultChar(char16_t c, TexStyle style) = 0;
 
   virtual float getDefaultRuleThickness(TexStyle style) = 0;
 

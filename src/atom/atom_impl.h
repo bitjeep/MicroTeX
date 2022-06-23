@@ -105,7 +105,7 @@ public:
 class DdtosAtom : public Atom {
 public:
   sptr<Box> createBox(Environment& env) override {
-    auto ldots = Formula::get(L"ldots")->_root->createBox(env);
+    auto ldots = Formula::get(u"ldots")->_root->createBox(env);
     float w = ldots->_width;
     auto dot = SymbolAtom::get("ldotp")->createBox(env);
     auto* hb1 = new HBox(dot, w, Alignment::left);
@@ -352,7 +352,7 @@ public:
 class IddotsAtom : public Atom {
 public:
   sptr<Box> createBox(Environment& env) override {
-    auto ldots = Formula::get(L"ldots")->_root->createBox(env);
+    auto ldots = Formula::get(u"ldots")->_root->createBox(env);
     float w = ldots->_width;
     auto dot = SymbolAtom::get("ldotp")->createBox(env);
     sptr<Box> hb1(new HBox(dot, w, Alignment::right));
@@ -429,12 +429,12 @@ public:
 class LapedAtom : public Atom {
 private:
   sptr<Atom> _at;
-  wchar_t _type;
+  char16_t _type;
 
 public:
   LapedAtom() = delete;
 
-  LapedAtom(const sptr<Atom>& a, wchar_t type) : _at(a), _type(type) {}
+  LapedAtom(const sptr<Atom>& a, char16_t type) : _at(a), _type(type) {}
 
   sptr<Box> createBox(Environment& env) override {
     auto b = _at->createBox(env);
@@ -721,9 +721,9 @@ private:
 public:
   RotateAtom() = delete;
 
-  RotateAtom(const sptr<Atom>& base, const std::wstring& angle, const std::wstring& option);
+  RotateAtom(const sptr<Atom>& base, const std::u16string& angle, const std::u16string& option);
 
-  RotateAtom(const sptr<Atom>& base, float angle, const std::wstring& option);
+  RotateAtom(const sptr<Atom>& base, float angle, const std::u16string& option);
 
   sptr<Box> createBox(Environment& env) override;
 
@@ -1113,7 +1113,7 @@ class LongDivAtom : public VRowAtom {
 private:
   long _divisor, _dividend;
 
-  void calculate(std::vector<std::wstring>& results) const;
+  void calculate(std::vector<std::u16string>& results) const;
 
 public:
   LongDivAtom() = delete;

@@ -122,9 +122,9 @@ void LaTeX::setDebug(bool debug) {
   Formula::setDEBUG(debug);
 }
 
-TeXRender* LaTeX::parse(const wstring& latex, int width, float textSize, float lineSpace, color fg) {
+TeXRender* LaTeX::parse(const u16string& latex, int width, float textSize, float lineSpace, color fg) {
   bool lined = true;
-  if (startswith(latex, L"$$") || startswith(latex, L"\\[")) {
+  if (startswith(latex, u"$$") || startswith(latex, u"\\[")) {
     lined = false;
   }
   Alignment align = lined ? Alignment::left : Alignment::center;

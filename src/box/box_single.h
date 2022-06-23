@@ -85,19 +85,19 @@ private:
   sptr<TextLayout> _layout;
   float _size{};
 
-  void init(const std::wstring& str, int type, float size, const sptr<Font>& font, bool kerning);
+  void init(const std::u16string& str, int type, float size, const sptr<Font>& font, bool kerning);
 
 public:
   TextRenderingBox() = delete;
 
   TextRenderingBox(
-    const std::wstring& str, int type, float size,
+    const std::u16string& str, int type, float size,
     const sptr<Font>& font, bool kerning
   ) {
     init(str, type, size, font, kerning);
   }
 
-  TextRenderingBox(const std::wstring& str, int type, float size) {
+  TextRenderingBox(const std::u16string& str, int type, float size) {
     init(str, type, size, sptr<Font>(_font), true);
   }
 

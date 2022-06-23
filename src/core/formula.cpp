@@ -10,7 +10,7 @@
 using namespace std;
 using namespace tex;
 
-map<wstring, sptr<Formula>> Formula::_predefinedTeXFormulas;
+map<u16string, sptr<Formula>> Formula::_predefinedTeXFormulas;
 
 map<UnicodeBlock, FontInfos*> Formula::_externalFontMap;
 
@@ -38,7 +38,7 @@ void Formula::_init_() {
 
 Formula::Formula(
   const TeXParser& tp,
-  const wstring& latex,
+  const u16string& latex,
   const string& textStyle,
   bool preprocess, bool isMathMode
 ) : _parser(tp.isPartial(), latex, this, preprocess, isMathMode) {
@@ -55,7 +55,7 @@ Formula::Formula(
   }
 }
 
-Formula::Formula(const TeXParser& tp, const wstring& latex, bool preprocess)
+Formula::Formula(const TeXParser& tp, const u16string& latex, bool preprocess)
   : _parser(tp.isPartial(), latex, this, preprocess) {
   _textStyle = "";
   _xmlMap = tp._formula->_xmlMap;
@@ -68,7 +68,7 @@ Formula::Formula(const TeXParser& tp, const wstring& latex, bool preprocess)
   }
 }
 
-Formula::Formula(const TeXParser& tp, const wstring& latex)
+Formula::Formula(const TeXParser& tp, const u16string& latex)
   : _parser(tp.isPartial(), latex, this) {
   _textStyle = "";
   _xmlMap = tp._formula->_xmlMap;
@@ -83,19 +83,19 @@ Formula::Formula(const TeXParser& tp, const wstring& latex)
   }
 }
 
-Formula::Formula() : _parser(L"", this, false) {}
+Formula::Formula() : _parser(u"", this, false) {}
 
-Formula::Formula(const wstring& latex) : _parser(latex, this) {
+Formula::Formula(const u16string& latex) : _parser(latex, this) {
   _textStyle = "";
   _parser.parse();
 }
 
-Formula::Formula(const wstring& latex, bool preprocess) : _parser(latex, this, preprocess) {
+Formula::Formula(const u16string& latex, bool preprocess) : _parser(latex, this, preprocess) {
   _textStyle = "";
   _parser.parse();
 }
 
-void Formula::setLaTeX(const wstring& latex) {
+void Formula::setLaTeX(const u16string& latex) {
   _parser.reset(latex);
   if (!latex.empty()) _parser.parse();
 }
@@ -128,10 +128,10 @@ sptr<Box> Formula::createBox(Environment& style) {
 }
 
 void Formula::setDEBUG(bool b) {
-  Box::DEBUG = b;
+  Box::DEBUG_MODE = b;
 }
 
-sptr<Formula> Formula::get(const wstring& name) {
+sptr<Formula> Formula::get(const u16string& name) {
   auto it = _predefinedTeXFormulas.find(name);
   if (it == _predefinedTeXFormulas.end()) {
     auto i = _predefinedTeXFormulasAsString.find(name);

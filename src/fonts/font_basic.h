@@ -20,14 +20,14 @@ struct Metrics {
 
 /** Represents a specific character in a specific font (identified by its font id) */
 struct CharFont {
-  wchar_t chr;
+  char16_t chr;
   int fontId, boldFontId;
 
   CharFont() : chr(0), fontId(0), boldFontId(0) {}
 
-  CharFont(wchar_t c, int f) : chr(c), fontId(f), boldFontId(f) {}
+  CharFont(char16_t c, int f) : chr(c), fontId(f), boldFontId(f) {}
 
-  CharFont(wchar_t c, int f, int bf) : chr(c), fontId(f), boldFontId(bf) {}
+  CharFont(char16_t c, int f, int bf) : chr(c), fontId(f), boldFontId(bf) {}
 
 #ifdef HAVE_LOG
 
@@ -39,7 +39,7 @@ struct CharFont {
 /** Class represents a character together with its font, font id and metric information */
 class Char {
 private:
-  wchar_t _c;
+  char16_t _c;
   int _fontCode;
   const Font* _font;
   sptr<CharFont> _cf;
@@ -48,11 +48,11 @@ private:
 public:
   Char() = delete;
 
-  Char(wchar_t c, const Font* f, int fc, const sptr<Metrics>& m);
+  Char(char16_t c, const Font* f, int fc, const sptr<Metrics>& m);
 
   sptr<CharFont> getCharFont() const { return _cf; }
 
-  inline wchar_t getChar() const { return _c; }
+  inline char16_t getChar() const { return _c; }
 
   inline const Font* getFont() const { return _font; }
 

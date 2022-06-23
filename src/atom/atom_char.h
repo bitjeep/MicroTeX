@@ -86,7 +86,7 @@ private:
 
   // symbol name
   std::string _name;
-  wchar_t _unicode;
+  char16_t _unicode;
 
 public:
   // contains all defined symbols
@@ -104,12 +104,12 @@ public:
    */
   SymbolAtom(const std::string& name, AtomType type, bool del) noexcept;
 
-  inline SymbolAtom& setUnicode(wchar_t c) {
+  inline SymbolAtom& setUnicode(char16_t c) {
     _unicode = c;
     return *this;
   }
 
-  inline wchar_t getUnicode() const {
+  inline char16_t getUnicode() const {
     return _unicode;
   }
 
@@ -151,7 +151,7 @@ public:
 class CharAtom : public CharSymbol {
 private:
   // alphanumeric character
-  wchar_t _c;
+  char16_t _c;
   // text style (empty means the default text style)
   std::string _textStyle;
   bool _mathMode;
@@ -172,13 +172,13 @@ public:
    * @param c the alphanumeric character
    * @param textStyle the text style in which the character should be drawn
    */
-  CharAtom(wchar_t c, std::string textStyle)
+  CharAtom(char16_t c, std::string textStyle)
     : _c(c), _textStyle(std::move(textStyle)), _mathMode(false) {}
 
-  CharAtom(wchar_t c, std::string textStyle, bool mathMode)
+  CharAtom(char16_t c, std::string textStyle, bool mathMode)
     : _c(c), _textStyle(std::move(textStyle)), _mathMode(mathMode) {}
 
-  inline wchar_t getCharacter() {
+  inline char16_t getCharacter() {
     return _c;
   }
 

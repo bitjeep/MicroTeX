@@ -251,7 +251,7 @@ sptr<Box> NthRoot::createBox(Environment& env) {
   return res;
 }
 
-RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const wstring& option)
+RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const u16string& option)
   : _angle(0), _option(Rotation::bl), _xunit(UnitType::em), _yunit(UnitType::em), _x(0), _y(0) {
   _type = base->_type;
   _base = base;
@@ -279,7 +279,7 @@ RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const wstring& optio
   }
 }
 
-RotateAtom::RotateAtom(const sptr<Atom>& base, const wstring& angle, const wstring& option)
+RotateAtom::RotateAtom(const sptr<Atom>& base, const u16string& angle, const u16string& option)
   : _angle(0), _option(Rotation::none), _xunit(UnitType::em), _yunit(UnitType::em), _x(0), _y(0) {
   _type = base->_type;
   _base = base;
@@ -368,19 +368,19 @@ sptr<Box> XArrowAtom::createBox(Environment& env) {
   return sptr<Box>(hb);
 }
 
-void LongDivAtom::calculate(vector<wstring>& results) const {
+void LongDivAtom::calculate(vector<u16string>& results) const {
   long quotient = _dividend / _divisor;
-  results.push_back(towstring(quotient));
+  results.push_back(tou16string(quotient));
   string x = tostring(quotient);
   size_t len = x.length();
   long remaining = _dividend;
-  results.push_back(towstring(remaining));
+  results.push_back(tou16string(remaining));
   for (size_t i = 0; i < len; i++) {
     long b = (x[i] - '0') * pow(10, len - i - 1);
     long product = b * _divisor;
     remaining = remaining - product;
-    results.push_back(towstring(product));
-    results.push_back(towstring(remaining));
+    results.push_back(tou16string(product));
+    results.push_back(tou16string(remaining));
   }
 }
 
@@ -388,7 +388,7 @@ LongDivAtom::LongDivAtom(long divisor, long dividend)
   : _divisor(divisor), _dividend(dividend) {
   _halign = Alignment::right;
   setVtop(true);
-  vector<wstring> results;
+  vector<u16string> results;
   calculate(results);
 
   auto rule = sptrOf<RuleAtom>(UnitType::ex, 0.f, UnitType::ex, 2.6f, UnitType::ex, 0.5f);
@@ -397,7 +397,7 @@ LongDivAtom::LongDivAtom(long divisor, long dividend)
   for (int i = 0; i < s; i++) {
     auto num = Formula(results[i])._root;
     if (i == 1) {
-      wstring divisor = towstring(_divisor);
+      u16string divisor = tou16string(_divisor);
       auto rparen = SymbolAtom::get(Formula::_symbolMappings[')']);
       auto big = sptrOf<BigDelimiterAtom>(rparen, 1);
       auto ph = sptrOf<PhantomAtom>(big, false, true, true);

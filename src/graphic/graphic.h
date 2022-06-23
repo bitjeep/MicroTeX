@@ -81,7 +81,7 @@ public:
    * @param font the specified font
    * @return new TextLayout
    */
-  static sptr<TextLayout> create(const std::wstring& src, const sptr<Font>& font);
+  static sptr<TextLayout> create(const std::u16string& src, const sptr<Font>& font);
 };
 
 /**
@@ -174,7 +174,7 @@ public:
    * @param x x-coordinate
    * @param y y-coordinate, is baseline aligned
    */
-  virtual void drawChar(wchar_t c, float x, float y) = 0;
+  virtual void drawChar(char16_t c, float x, float y) = 0;
 
   /**
    * Draw text, is baseline aligned
@@ -183,7 +183,7 @@ public:
    * @param x x-coordinate
    * @param y y-coordinate, is baseline aligned
    */
-  virtual void drawText(const std::wstring& c, float x, float y) = 0;
+  virtual void drawText(const std::u16string& c, float x, float y) = 0;
 
   /**
    * Draw line

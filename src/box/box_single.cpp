@@ -50,7 +50,7 @@ void TextRenderingBox::setFont(const string& name) {
 }
 
 void TextRenderingBox::init(
-  const wstring& str, int type, float size, const sptr<Font>& f, bool kerning
+  const u16string& str, int type, float size, const sptr<Font>& f, bool kerning
 ) {
   _size = size;
   _layout = TextLayout::create(str, f->deriveFont(type));

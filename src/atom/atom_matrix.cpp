@@ -7,7 +7,7 @@ using namespace tex;
 
 color MatrixAtom::LINE_COLOR = transparent;
 
-map<wstring, wstring> MatrixAtom::_colspeReplacement;
+map<u16string, u16string> MatrixAtom::_colspeReplacement;
 
 SpaceAtom MatrixAtom::_hsep(UnitType::em, 1.f, 0.f, 0.f);
 SpaceAtom MatrixAtom::_semihsep(UnitType::em, 0.5f, 0.f, 0.f);
@@ -18,14 +18,14 @@ SpaceAtom MatrixAtom::_align(SpaceType::medMuSkip);
 
 sptr<Box> MatrixAtom::_nullbox(new StrutBox(0.f, 0.f, 0.f, 0.f));
 
-void MatrixAtom::defineColumnSpecifier(const wstring& rep, const wstring& spe) {
+void MatrixAtom::defineColumnSpecifier(const u16string& rep, const u16string& spe) {
   _colspeReplacement[rep] = spe;
 }
 
-void MatrixAtom::parsePositions(wstring opt, vector<Alignment>& lpos) {
+void MatrixAtom::parsePositions(u16string opt, vector<Alignment>& lpos) {
   int len = opt.length();
   int pos = 0;
-  wchar_t ch;
+  char16_t ch;
   sptr<Formula> tf;
   sptr<TeXParser> tp;
   // clear first
@@ -74,12 +74,12 @@ void MatrixAtom::parsePositions(wstring opt, vector<Alignment>& lpos) {
         pos++;
         tf = sptrOf<Formula>();
         tp = sptrOf<TeXParser>(_isPartial, opt.substr(pos), tf.get(), false);
-        vector<wstring> args;
+        vector<u16string> args;
         tp->getOptsArgs(2, 0, args);
         pos += tp->getPos();
         int nrep = 0;
         valueof(args[1], nrep);
-        wstring str;
+        u16string str;
         for (int j = 0; j < nrep; j++) str += args[2];
         opt.insert(pos, str);
         len = opt.length();
@@ -328,20 +328,20 @@ sptr<Box> MatrixAtom::generateMulticolumn(
   return sptrOf<HBox>(b, w, mca->align());
 }
 
-MatrixAtom::MatrixAtom(bool isPartial, const sptr<ArrayFormula>& arr, const wstring& options, bool spaceAround) {
+MatrixAtom::MatrixAtom(bool isPartial, const sptr<ArrayFormula>& arr, const u16string& options, bool spaceAround) {
   _matrix = arr;
   _matType = MatrixType::array;
   _isPartial = isPartial;
   _spaceAround = spaceAround;
-  parsePositions(wstring(options), _position);
+  parsePositions(u16string(options), _position);
 }
 
-MatrixAtom::MatrixAtom(bool isPartial, const sptr<ArrayFormula>& arr, const wstring& options) {
+MatrixAtom::MatrixAtom(bool isPartial, const sptr<ArrayFormula>& arr, const u16string& options) {
   _matrix = arr;
   _matType = MatrixType::array;
   _isPartial = isPartial;
   _spaceAround = false;
-  parsePositions(wstring(options), _position);
+  parsePositions(u16string(options), _position);
 }
 
 MatrixAtom::MatrixAtom(bool isPartial, const sptr<ArrayFormula>& arr, MatrixType type) {
@@ -699,7 +699,7 @@ SpaceAtom MultlineAtom::_vsep_in(UnitType::ex, 0.f, 1.f, 0.f);
 sptr<Box> MultlineAtom::createBox(Environment& env) {
   float tw = env.getTextWidth();
   if (tw == POS_INF || _lineType == MultiLineType::gathered)
-    return MatrixAtom(_isPartial, _column, L"").createBox(env);
+    return MatrixAtom(_isPartial, _column, u"").createBox(env);
 
   auto* vb = new VBox();
   auto atom = _column->_array[0][0];

@@ -49,7 +49,7 @@ public:
    * @param lineSpace the line space
    * @param fg the foreground color
    */
-  static TeXRender* parse(const std::wstring& tex, int width, float textSize, float lineSpace, color fg);
+  static TeXRender* parse(const std::u16string& tex, int width, float textSize, float lineSpace, color fg);
 
   /**
    * Release the LaTeX context

@@ -15,27 +15,27 @@ void FontInfo::__register(const FontSet& set) {
   for (auto r : regs) r.reg();
 }
 
-const float* const FontInfo::getMetrics(wchar_t ch) const {
+const float* const FontInfo::getMetrics(char16_t ch) const {
   return _metrics.isEmpty() ? nullptr : _metrics((float)ch) + 1;
 }
 
-const int* const FontInfo::getExtension(wchar_t ch) const {
+const int* const FontInfo::getExtension(char16_t ch) const {
   return _extensions.isEmpty() ? nullptr : _extensions((int)ch) + 1;
 }
 
-//sptr<CharFont> FontInfo::getNextLarger(wchar_t ch) const {
+//sptr<CharFont> FontInfo::getNextLarger(char16_t ch) const {
 //  const int* const item = _nextLargers((int)ch);
 //  if (item == nullptr) return nullptr;
 //  return sptrOf<CharFont>(item[1], item[2]);
 //}
 
-//sptr<CharFont> FontInfo::getLigture(wchar_t left, wchar_t right) const {
-//  const wchar_t* const item = _lig(left, right);
+//sptr<CharFont> FontInfo::getLigture(char16_t left, char16_t right) const {
+//  const char16_t* const item = _lig(left, right);
 //  if (item == nullptr) return nullptr;
 //  return sptrOf<CharFont>(item[2], _id);
 //}
 
-float FontInfo::getKern(wchar_t left, wchar_t right, float factor) const {
+float FontInfo::getKern(char16_t left, char16_t right, float factor) const {
   const float* const item = _kern((float)left, (float)right);
   if (item == nullptr) return 0;
   return item[2] * factor;
@@ -89,7 +89,7 @@ namespace tex {
             os << "ligatures:" << endl;
             const int rows = info._lig.rows();
             for (int i = 0; i < rows; i++) {
-                const wchar_t* t = info._lig[i];
+                const char16_t* t = info._lig[i];
                 os << "\t["
                     << setw(3) << t[0] << ", "
                     << setw(3) << t[1] << "] = "
