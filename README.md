@@ -10,11 +10,12 @@ It is a dynamic, cross-platform, and embeddable LaTeX rendering library. Its mai
 
 # Build demo
 
-First make sure you have a C++ compiler that supports `C++ 17` standard. It uses CMake to build the demo, make sure you have it installed. Currently support Windows and Linux on PC, the version on Mac OS is in the plan, and you can find the Android version in [here](https://github.com/NanoMichael/AndroidLaTeXMath).
+First make sure you have a C++ compiler that supports `C++ 17` standard. It uses CMake to build the demo, make sure you have it installed. Currently support Windows and Linux on PC, and you can find the Android version in [here](https://github.com/NanoMichael/AndroidLaTeXMath).
 
 - `CygWin` or `MinGW` is recommended to be installed on Windows, and `Gdiplus` is required.
 - `GTKMM` and `GSVMM` must be installed on Linux for a GTK build.
 - Qt development packages must be installed for a Qt installation.
+- Xcode and the Homebrew version of tinyxml2 must be installed for an Apple build.  Note that there is currently no sample app for Apple platforms, just a library.
 
 After all the dependencies have been satisfied, run the following commands to build:
 
