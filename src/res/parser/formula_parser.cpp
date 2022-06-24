@@ -64,7 +64,7 @@ int TeXFormulaSettingParser::getUtf(const XMLElement* e, const char* attr) {
   if (val == nullptr || strlen(val) == 0) {
     throw ex_xml_parse(RESOURCE_NAME, e->Name(), attr, "no mapping!");
   }
-  const std::u16string wstr = tex::utf82wide(val);
+  const std::u16string wstr = tex::utf82utf16(val);
   if (wstr.empty() || wstr.length() != 1) {
     throw ex_xml_parse(RESOURCE_NAME, e->Name(), attr, "unknown code point!");
   }

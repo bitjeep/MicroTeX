@@ -62,7 +62,7 @@ inline macro(longdiv) {
 
 inline macro(cellcolor) {
   if (!tp.isArrayMode()) throw ex_parse("Command \\cellcolor must used in array environment!");
-  color c = ColorAtom::getColor(wide2utf8(args[1]));
+  color c = ColorAtom::getColor(utf162utf8(args[1]));
   auto atom = sptrOf<CellColorAtom>(c);
   ((ArrayFormula*) tp._formula)->addCellSpecifier(atom);
   return nullptr;
@@ -73,7 +73,7 @@ inline macro(color) {
   // when parsing a LaTeX string, it is useless to specify a global foreground color again, but in
   // array mode, the \color command is useful to specify the foreground color of the columns.
   if (tp.isArrayMode()) {
-    color c = ColorAtom::getColor(wide2utf8(args[1]));
+    color c = ColorAtom::getColor(utf162utf8(args[1]));
     return sptrOf<CellForegroundAtom>(c);
   }
   return nullptr;
@@ -85,19 +85,19 @@ inline macro(newcolumntype) {
 }
 
 inline macro(arrayrulecolor) {
-  color c = ColorAtom::getColor(wide2utf8(args[1]));
+  color c = ColorAtom::getColor(utf162utf8(args[1]));
   MatrixAtom::LINE_COLOR = c;
   return nullptr;
 }
 
 inline macro(columnbg) {
-  color c = ColorAtom::getColor(wide2utf8(args[1]));
+  color c = ColorAtom::getColor(utf162utf8(args[1]));
   return sptrOf<CellColorAtom>(c);
 }
 
 inline macro(rowcolor) {
   if (!tp.isArrayMode()) throw ex_parse("Command \\rowcolor must used in array environment!");
-  color c = ColorAtom::getColor(wide2utf8(args[1]));
+  color c = ColorAtom::getColor(utf162utf8(args[1]));
   auto spe = sptrOf<CellColorAtom>(c);
   ((ArrayFormula*) tp._formula)->addRowSpecifier(spe);
   return nullptr;
@@ -250,7 +250,7 @@ inline macro(underscore) {
 }
 
 inline macro(accents) {
-  const std::string x = wide2utf8(args[0]);
+  const std::string x = utf162utf8(args[0]);
   return sptrOf<AccentedAtom>(Formula(tp, args[1], false)._root, x);
 }
 
@@ -464,7 +464,7 @@ inline macro(joinrel) {
 }
 
 inline macro(smash) {
-  const std::string x = wide2utf8(args[2]);
+  const std::string x = utf162utf8(args[2]);
   return sptrOf<SmashedAtom>(Formula(tp, args[1], false)._root, x);
 }
 
@@ -539,7 +539,7 @@ inline macro(matrixATATenv) {
 inline macro(multicolumn) {
   int n = 0;
   valueof(args[1], n);
-  const std::string x = wide2utf8(args[2]);
+  const std::string x = utf162utf8(args[2]);
   tp.addAtom(sptrOf<MulticolumnAtom>(n, x, Formula(tp, args[3])._root));
   ((ArrayFormula*) tp._formula)->addCol(n);
   return nullptr;
@@ -920,8 +920,8 @@ inline macro(scalebox) {
 }
 
 inline macro(resizebox) {
-  const std::string ws = wide2utf8(args[1]);
-  const std::string hs = wide2utf8(args[2]);
+  const std::string ws = utf162utf8(args[1]);
+  const std::string hs = utf162utf8(args[2]);
   return sptrOf<ResizeAtom>(Formula(tp, args[3])._root, ws, hs, ws == "!" || hs == "!");
 }
 
@@ -948,32 +948,32 @@ inline macro(doublebox) {
 
 inline macro(fgcolor) {
   auto a = Formula(tp, args[2])._root;
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   return sptrOf<ColorAtom>(a, TRANSPARENT, ColorAtom::getColor(x));
 }
 
 inline macro(bgcolor) {
   auto a = Formula(tp, args[2])._root;
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   return sptrOf<ColorAtom>(a, ColorAtom::getColor(x), TRANSPARENT);
 }
 
 inline macro(textcolor) {
   auto a = Formula(tp, args[2])._root;
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   return sptrOf<ColorAtom>(a, TRANSPARENT, ColorAtom::getColor(x));
 }
 
 inline macro(colorbox) {
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   color c = ColorAtom::getColor(x);
   return sptrOf<FBoxAtom>(Formula(tp, args[2])._root, c, c);
 }
 
 inline macro(fcolorbox) {
-  std::string x = wide2utf8(args[2]);
+  std::string x = utf162utf8(args[2]);
   color f = ColorAtom::getColor(x);
-  std::string y = wide2utf8(args[1]);
+  std::string y = utf162utf8(args[1]);
   color b = ColorAtom::getColor(y);
   return sptrOf<FBoxAtom>(Formula(tp, args[3])._root, f, b);
 }
@@ -994,7 +994,7 @@ inline macro(doteq) {
 }
 
 inline macro(externalfont) {
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   TextRenderingBox::setFont(x);
   return nullptr;
 }
@@ -1284,7 +1284,7 @@ inline macro(Dstrok) {
 }
 
 inline macro(char) {
-  std::string x = wide2utf8(args[1]);
+  std::string x = utf162utf8(args[1]);
   int radix = 10;
   if (startswith(x, "0x") || startswith(x, "0X")) {
     x = x.substr(2);

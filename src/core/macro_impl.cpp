@@ -185,7 +185,7 @@ macro(textstyles) {
     Formula::_externalFontMap[UnicodeBlock::BASIC_LATIN] = info;
   }
 
-  string s = wide2utf8(style);
+  string s = utf162utf8(style);
   return sptrOf<TextStyleAtom>(atom, s);
 }
 
@@ -282,7 +282,7 @@ macro(newcommand) {
   u16string newcmd(args[1]);
   int nbArgs = 0;
   if (!tp.isValidName(newcmd))
-    throw ex_parse("Invalid name for the command '" + wide2utf8(newcmd));
+    throw ex_parse("Invalid name for the command '" + utf162utf8(newcmd));
 
   if (!args[3].empty()) valueof(args[3], nbArgs);
 
@@ -299,7 +299,7 @@ macro(renewcommand) {
   u16string newcmd(args[1]);
   int nbArgs = 0;
   if (!tp.isValidName(newcmd))
-    throw ex_parse("Invalid name for the command: " + wide2utf8(newcmd));
+    throw ex_parse("Invalid name for the command: " + utf162utf8(newcmd));
 
   if (!args[3].empty()) valueof(args[3], nbArgs);
 
@@ -321,7 +321,7 @@ macro(raisebox) {
 
 macro(definecolor) {
   color c = TRANSPARENT;
-  string cs = wide2utf8(args[3]);
+  string cs = utf162utf8(args[3]);
   if (args[2] == u"gray") {
     float f = 0;
     valueof(args[3], f);
@@ -351,7 +351,7 @@ macro(definecolor) {
     throw ex_parse("Color model is incorrect!");
   }
 
-  ColorAtom::defineColor(wide2utf8(args[1]), c);
+  ColorAtom::defineColor(utf162utf8(args[1]), c);
   return nullptr;
 }
 
@@ -388,7 +388,7 @@ macro(romannumeral) {
   string roman;
 
   int num;
-  string x = wide2utf8(args[1]);
+  string x = utf162utf8(args[1]);
   valueof(trim(x), num);
   for (int i = 0; i < 13; i++) {
     while (num >= numbers[i]) {
@@ -401,7 +401,7 @@ macro(romannumeral) {
     tolower(roman);
   }
 
-  const u16string str = utf82wide(roman);
+  const u16string str = utf82utf16(roman);
   return Formula(str, false)._root;
 }
 
@@ -442,11 +442,11 @@ macro(xml) {
       start = pos;
       while (++start < str.length() && isalpha(str[start]));
       u16string key = str.substr(pos + 1, start - pos - 1);
-      string x = wide2utf8(key);
+      string x = utf162utf8(key);
       auto it = m.find(x);
       if (it != m.end()) {
         buf.append(str.substr(0, pos));
-        u16string x = utf82wide(it->second.c_str());
+        u16string x = utf82utf16(it->second.c_str());
         buf.append(x);
       } else {
         buf.append(str.substr(0, start));

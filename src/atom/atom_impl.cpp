@@ -256,7 +256,7 @@ RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const u16string& opt
   _type = base->_type;
   _base = base;
   _angle = angle;
-  const string x = wide2utf8(option);
+  const string x = utf162utf8(option);
   const auto& opt = parseOption(x);
   auto it = opt.find("origin");
   if (it != opt.end()) {
@@ -284,7 +284,7 @@ RotateAtom::RotateAtom(const sptr<Atom>& base, const u16string& angle, const u16
   _type = base->_type;
   _base = base;
   valueof(angle, _angle);
-  const string x = wide2utf8(option);
+  const string x = utf162utf8(option);
   _option = RotateBox::getOrigin(x);
 }
 

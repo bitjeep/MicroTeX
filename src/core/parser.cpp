@@ -484,7 +484,7 @@ sptr<Atom> TeXParser::processEscape() {
     return processCommands(command, mac);
   }
 
-  const string cmd = wide2utf8(command);
+  const string cmd = utf162utf8(command);
   try {
     return Formula::get(command)->_root;
   } catch (ex_formula_not_found& e) {
@@ -716,7 +716,7 @@ void TeXParser::inflateEnv(u16string& cmd, Args& args, int& pos) {
   if (mac == nullptr) {
     throw ex_parse(
       "Unknown environment: "
-      + wide2utf8(args[1])
+      + utf162utf8(args[1])
       + " at position " + tostring(getLine())
       + ":" + tostring(getCol())
     );
@@ -935,7 +935,7 @@ sptr<Atom> TeXParser::convertCharacter(char16_t c, bool oneChar) {
       return SymbolAtom::get(Formula::_symbolMappings[c]);
     } else if (c >= 913 && c <= 937) {
       // Greek capital letter
-      u16string ltx = utf82wide(Formula::_symbolFormulaMappings[c]);
+      u16string ltx = utf82utf16(Formula::_symbolFormulaMappings[c]);
       return Formula(ltx)._root;
     }
   }
@@ -1013,7 +1013,7 @@ sptr<Atom> TeXParser::convertCharacter(char16_t c, bool oneChar) {
       }
       auto it = Formula::_symbolFormulaMappings.find(c);
       if (it != Formula::_symbolFormulaMappings.end()) {
-        u16string wstr = utf82wide(it->second);
+        u16string wstr = utf82utf16(it->second);
         return Formula(wstr)._root;
       }
 

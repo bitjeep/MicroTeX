@@ -42,6 +42,6 @@ pair<UnitType, float> SpaceAtom::getLength(const string& lgth) {
 }
 
 pair<UnitType, float> SpaceAtom::getLength(const u16string& lgth) {
-  const string s = wide2utf8(lgth);
+  const string s = utf162utf8(lgth);
   return getLength(s);
 }

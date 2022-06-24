@@ -17,7 +17,7 @@ bool NewCommandMacro::isMacro(const u16string& name) {
 void NewCommandMacro::checkNew(const u16string& name) {
   if (_errIfConflict && isMacro(name))
     throw ex_parse(
-      "Command " + wide2utf8(name)
+      "Command " + utf162utf8(name)
       + " already exists! Use renewcommand instead!"
     );
 }
@@ -25,7 +25,7 @@ void NewCommandMacro::checkNew(const u16string& name) {
 void NewCommandMacro::checkRenew(const u16string& name) {
   if (NewCommandMacro::_errIfConflict && !isMacro(name))
     throw ex_parse(
-      "Command " + wide2utf8(name)
+      "Command " + utf162utf8(name)
       + " is no defined! Use newcommand instead!"
     );
 }
@@ -114,7 +114,7 @@ void NewEnvironmentMacro::addRenewEnvironment(
 ) {
   if (_codes.find(name + u"@env") == _codes.end()) {
     throw ex_parse(
-      "Environment " + wide2utf8(name)
+      "Environment " + utf162utf8(name)
       + "is not defined! Use newenvironment instead!"
     );
   }
@@ -154,7 +154,7 @@ sptr<Atom> PreDefMacro::invoke(
   } catch (ex_parse& e) {
     throw ex_parse(
       "Problem with command "
-      + wide2utf8(args[0])
+      + utf162utf8(args[0])
       + " at position " + tostring(tp.getLine()) + ":"
       + tostring(tp.getCol()) + "\n caused by: " + e.what()
     );

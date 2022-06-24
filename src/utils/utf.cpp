@@ -3,7 +3,7 @@
 using namespace std;
 using namespace tex;
 
-string tex::wide2utf8(const std::u16string& src) {
+string tex::utf162utf8(const std::u16string& src) {
   const char16_t* in = src.c_str();
   string out;
   unsigned int codepoint = 0;
@@ -38,7 +38,7 @@ string tex::wide2utf8(const std::u16string& src) {
   return out;
 }
 
-u16string tex::utf82wide(const std::string& src) {
+u16string tex::utf82utf16(const std::string& src) {
   const char* in = src.c_str();
   u16string out;
   if (in == nullptr) return out;
