@@ -20,8 +20,11 @@ else ()
     include(CheckCXXCompilerFlag)
     CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
     CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
+    CHECK_CXX_COMPILER_FLAG("-std=c++20" COMPILER_SUPPORTS_CXX20)
 
     # check gcc version
+    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         if ("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 9)
@@ -34,7 +37,9 @@ else ()
         endif ()
     endif ()
 
-    if (COMPILER_SUPPORTS_CXX17)
+    if (COMPILER_SUPPORTS_CXX20)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+    elseif (COMPILER_SUPPORTS_CXX17)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     elseif (COMPILER_SUPPORTS_CXX11)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -149,8 +154,8 @@ target_include_directories(LaTeX PUBLIC src)
 if (QT)
     message(STATUS, "Cross platform build using Qt")
     target_compile_definitions(LaTeX PUBLIC -DBUILD_QT)
-    find_package(QT NAMES Qt6 Qt5 COMPONENTS Gui Widgets REQUIRED)
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Widgets REQUIRED)
+    find_package(QT NAMES Qt6 Qt5 COMPONENTS Gui Widgets PrintSupport REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui Widgets PrintSupport REQUIRED)
     target_sources(LaTeX PRIVATE
             src/platform/qt/graphic_qt.cpp
             )
@@ -163,7 +168,9 @@ if (QT)
             src/samples/qt_main.cpp
             )
     target_link_libraries(LaTeXQtSample PRIVATE
-            Qt${QT_VERSION_MAJOR}::Widgets LaTeX)
+            Qt${QT_VERSION_MAJOR}::Widgets
+            Qt${QT_VERSION_MAJOR}::PrintSupport
+            LaTeX)
     set_target_properties(LaTeXQtSample PROPERTIES OUTPUT_NAME LaTeX)
     set_target_properties(LaTeXQtSample PROPERTIES AUTOMOC ON)
 elseif (SKIA)
